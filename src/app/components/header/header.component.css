@@ -1,0 +1,24 @@
+.header-container {
+  width: 100%;
+  height: 60px;
+  padding: 5px 20px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  box-shadow: 0 1px 5px #000000;
+}
+
+.logo {
+  min-width: 60px;
+  height: 100%;
+}
+
+.menu-bar {
+  flex-grow: 1;
+}
+
+.user-dropdown {
+  width: 150px;
+  height: 100%;
+  justify-self: flex-end;
+}
