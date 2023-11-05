@@ -26,4 +26,4 @@ export function getAllUserJourneys(http: HttpClient, rootUrl: string, params?: G
   );
 }
 
-getAllUserJourneys.PATH = '/v1/journeys/list';
+getAllUserJourneys.PATH = '/v1/journeys';

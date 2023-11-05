@@ -1,0 +1,15 @@
+.app-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+  background-color: #EDEDE9;
+}
+
+/*.app-container-background {*/
+/*  background-image: url("src/assets/images/pexels-stanislav-kondratiev-3461640.jpg");*/
+/*  background-repeat: no-repeat;*/
+/*  background-position: center;*/
+/*  background-size: cover;*/
+/*}*/

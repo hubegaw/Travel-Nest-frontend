@@ -26,4 +26,4 @@ export function getAllUsers(http: HttpClient, rootUrl: string, params?: GetAllUs
   );
 }
 
-getAllUsers.PATH = '/v1/users/list';
+getAllUsers.PATH = '/v1/users';

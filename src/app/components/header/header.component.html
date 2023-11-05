@@ -1,5 +1,13 @@
 <div class="header-container">
-  <div class="logo"></div>
-  <div class="menu-bar"></div>
-  <div class="user-dropdown"></div>
+  <div id="top-header">
+    <div class="logo"><h2>Travelnest</h2></div>
+  </div>
+  <div class="login-nav user-menu" *ngIf="!authService.isLoggedIn()">
+    <p-speedDial [model]="itemsUser" direction="down" showIcon="pi pi-bars" buttonClassName="p-button-outlined border-primary-900"></p-speedDial>
+  </div>
+<!--  <div class="user-dropdown user-menu" *ngIf="authService.isLoggedIn()">-->
+<!--    <p-menu #menu [model]="itemsUser" [popup]="true"></p-menu>-->
+<!--    <button pButton type="button" (click)="menu.toggle($event)" icon="pi pi-bars" class="user-button"></button>-->
+<!--  </div>-->
 </div>
+

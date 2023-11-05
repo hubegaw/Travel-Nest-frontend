@@ -2,11 +2,13 @@ import {Injectable} from "@angular/core";
 import {ApiConfiguration} from "../api/api-configuration";
 import {HttpClient, HttpContext, HttpHeaders, HttpResponse} from "@angular/common/http";
 import {ApiService} from "../api/services";
-import {Observable} from "rxjs";
+import {Observable, tap} from "rxjs";
 import {UserDto} from "../api/models/user-dto";
 import {StrictHttpResponse} from "../api/strict-http-response";
 import {RequestBuilder} from "../api/request-builder";
 import {filter, map} from "rxjs/operators";
+import {AuthDto} from "../api/models/auth-dto";
+import {AuthResponse} from "../api/models/auth-response";
 
 @Injectable({ providedIn: 'root' })
 export class UserApiService extends ApiService {
@@ -14,6 +16,27 @@ export class UserApiService extends ApiService {
 
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
+  }
+
+  override authenticate$Response(
+    params: {
+      body: AuthDto
+    },
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<AuthResponse>> {
+    const rb = new RequestBuilder(this.rootUrl, ApiService.AuthenticatePath, 'post');
+    if (params) {
+       rb.body(params.body, 'application/json');
+    }
+
+    return this.http.request(
+      rb.build({ responseType: 'json', accept: 'application/json', context })
+    ).pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<AuthResponse>;
+      })
+    );
   }
 
   override getAllUsers$Response(

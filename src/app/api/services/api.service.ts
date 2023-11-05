@@ -11,6 +11,7 @@ import { StrictHttpResponse } from '../strict-http-response';
 
 import { authenticate } from '../fn/operations/authenticate';
 import { Authenticate$Params } from '../fn/operations/authenticate';
+import { AuthResponse } from '../models/auth-response';
 import { deleteJourney } from '../fn/operations/delete-journey';
 import { DeleteJourney$Params } from '../fn/operations/delete-journey';
 import { getAllUserJourneys } from '../fn/operations/get-all-user-journeys';
@@ -86,7 +87,7 @@ export class ApiService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  authenticate$Response(params: Authenticate$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+  authenticate$Response(params: Authenticate$Params, context?: HttpContext): Observable<StrictHttpResponse<AuthResponse>> {
     return authenticate(this.http, this.rootUrl, params, context);
   }
 
@@ -100,14 +101,14 @@ export class ApiService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  authenticate(params: Authenticate$Params, context?: HttpContext): Observable<void> {
+  authenticate(params: Authenticate$Params, context?: HttpContext): Observable<AuthResponse> {
     return this.authenticate$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+      map((r: StrictHttpResponse<AuthResponse>): AuthResponse => r.body)
     );
   }
 
   /** Path part for operation `getAllUsers()` */
-  static readonly GetAllUsersPath = '/v1/users/list';
+  static readonly GetAllUsersPath = '/v1/users';
 
   /**
    * Get list of all users.
@@ -239,7 +240,7 @@ export class ApiService extends BaseService {
   }
 
   /** Path part for operation `getAllUserJourneys()` */
-  static readonly GetAllUserJourneysPath = '/v1/journeys/list';
+  static readonly GetAllUserJourneysPath = '/v1/journeys';
 
   /**
    * Get list of all user's journeys.
@@ -268,39 +269,6 @@ export class ApiService extends BaseService {
   getAllUserJourneys(params?: GetAllUserJourneys$Params, context?: HttpContext): Observable<Array<JourneyDto>> {
     return this.getAllUserJourneys$Response(params, context).pipe(
       map((r: StrictHttpResponse<Array<JourneyDto>>): Array<JourneyDto> => r.body)
-    );
-  }
-
-  /** Path part for operation `getJourney()` */
-  static readonly GetJourneyPath = '/v1/journeys/{id}';
-
-  /**
-   * Get journey.
-   *
-   *
-   *
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `getJourney()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  getJourney$Response(params: GetJourney$Params, context?: HttpContext): Observable<StrictHttpResponse<JourneyDto>> {
-    return getJourney(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * Get journey.
-   *
-   *
-   *
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `getJourney$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  getJourney(params: GetJourney$Params, context?: HttpContext): Observable<JourneyDto> {
-    return this.getJourney$Response(params, context).pipe(
-      map((r: StrictHttpResponse<JourneyDto>): JourneyDto => r.body)
     );
   }
 
@@ -400,6 +368,39 @@ export class ApiService extends BaseService {
   deleteJourney(params: DeleteJourney$Params, context?: HttpContext): Observable<void> {
     return this.deleteJourney$Response(params, context).pipe(
       map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
+  /** Path part for operation `getJourney()` */
+  static readonly GetJourneyPath = '/v1/journeys/{id}';
+
+  /**
+   * Get journey.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getJourney()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getJourney$Response(params: GetJourney$Params, context?: HttpContext): Observable<StrictHttpResponse<JourneyDto>> {
+    return getJourney(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Get journey.
+   *
+   *
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getJourney$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getJourney(params: GetJourney$Params, context?: HttpContext): Observable<JourneyDto> {
+    return this.getJourney$Response(params, context).pipe(
+      map((r: StrictHttpResponse<JourneyDto>): JourneyDto => r.body)
     );
   }
 

@@ -9,20 +9,32 @@ import { NotFoundComponent } from './components/errors/not-found/not-found.compo
 import { UnauthorizedComponent } from './components/errors/unauthorized/unauthorized.component';
 import {HeaderComponent} from "./components/header";
 import {FooterComponent} from "./components/footer";
+import { RegisterComponent } from './components/register/register.component';
+import {InputTextModule} from "primeng/inputtext";
+import {ReactiveFormsModule} from "@angular/forms";
+import {LoginModule} from "./components/login/login.module";
+import {HttpClientModule} from "@angular/common/http";
+import { MatIconModule } from "@angular/material/icon";
 
 @NgModule({
   declarations: [
     AppComponent,
     ForbiddenComponent,
     NotFoundComponent,
-    UnauthorizedComponent
+    UnauthorizedComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HomeModule,
+    LoginModule,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    InputTextModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]

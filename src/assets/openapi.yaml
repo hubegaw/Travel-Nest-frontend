@@ -33,7 +33,11 @@ paths:
       responses:
         '200':
           description: authenticate
-  /v1/users/list:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+  /v1/users:
     get:
       operationId: getAllUsers
       summary: Get list of all users
@@ -110,7 +114,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserDTO'
-  /v1/journeys/list:
+  /v1/journeys:
     get:
       operationId: getAllUserJourneys
       summary: Get list of all user's journeys
@@ -125,26 +129,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/JourneyDTO'
-  /v1/journeys/{id}:
-    parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-    get:
-      operationId: getJourney
-      summary: Get journey
-      security:
-        - bearerAuth: [ ]
-      responses:
-        '200':
-          description: get journey
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/JourneyDTO'
-  /v1/journeys:
     post:
       requestBody:
         required: true
@@ -187,6 +171,25 @@ paths:
       responses:
         '200':
           description: delete journey
+  /v1/journeys/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: getJourney
+      summary: Get journey
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: get journey
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JourneyDTO'
 
 components:
   schemas:
@@ -275,6 +278,15 @@ components:
         email:
           type: string
         password:
+          type: string
+    AuthResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+        tokenType:
           type: string
 
   securitySchemes:

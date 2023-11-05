@@ -1,24 +1,33 @@
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
 .header-container {
-  width: 100%;
-  height: 60px;
-  padding: 5px 20px;
+  height: 100px;
+  min-width: 376px;
+  padding: 10px 0;
+  margin: 0 10px;
   display: flex;
-  justify-content: flex-start;
+  flex-direction: column;
+}
+
+#top-header {
+  display: flex;
+  height: 100%;
   align-items: center;
-  box-shadow: 0 1px 5px #000000;
+  justify-content: center;
+  color: #444346;
 }
 
 .logo {
   min-width: 60px;
-  height: 100%;
 }
 
-.menu-bar {
-  flex-grow: 1;
+.logo h2 {
+  font-size: 65px;
 }
 
-.user-dropdown {
-  width: 150px;
-  height: 100%;
-  justify-self: flex-end;
+.user-menu {
+  align-self: center;
+  position: fixed;
+  top: 25px;
+  left: 10px;
 }
