@@ -1,5 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {booleanAttribute, Component, inject, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {JourneyApiService} from "../../services/journey-api.service";
+import {FlightService} from "../../services/flight.service";
+import {FlightOfferDto} from "../../api/models/flight-offer-dto";
+import {FlightOfferResponse} from "../../api/models/flight-offer-response";
+import {catchError, map} from "rxjs/operators";
+import {of} from "rxjs";
+import {SharedService} from "../../services/shared.service";
 
 @Component({
   selector: 'app-home',
@@ -7,14 +14,11 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  searchForm!: FormGroup;
+  componentName: string = "home"
+  constructor() {
+  }
 
   ngOnInit() {
-    this.searchForm = new FormGroup({
-      departure: new FormControl('', Validators.required),
-      arrival: new FormControl('', Validators.required),
-      startDate: new FormControl<Date | null>(null, Validators.required),
-      endDate: new FormControl<Date | null>(null, Validators.required)
-    });
+
   }
 }

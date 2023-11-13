@@ -1,38 +1,6 @@
 <div id="home-container">
-  <div id="search-container" class="bg-surface-300">
-    <div id="search-options">
-      <p-button label="Flights" class="search-button"></p-button>
-      <p-button label="Hotels" class="search-button"></p-button>
-      <p-button label="Car Rental" class="search-button"></p-button>
-    </div>
-    <form [formGroup]="searchForm">
-      <div class="card flex justify-content-center">
-      <span class="p-float-label">
-          <input pInputText id="departure" formControlName="departure"/>
-          <label htmlFor="departure">From</label>
-      </span>
-      </div>
-      <div class="card flex justify-content-center">
-      <span class="p-float-label">
-          <input pInputText id="arrival" formControlName="arrival"/>
-          <label htmlFor="arrival">To</label>
-      </span>
-      </div>
-      <div class="card flex justify-content-center">
-      <span class="p-float-label">
-          <p-calendar id="startDate" formControlName="startDate"/>
-          <label htmlFor="startDate">Depart</label>
-      </span>
-      </div>
-      <div class="card flex justify-content-center">
-      <span class="p-float-label">
-          <p-calendar id="endDate" formControlName="endDate"/>
-          <label htmlFor="endDate">Return</label>
-      </span>
-      </div>
-      <div class="card flex justify-content-center">
-        <p-button label="Submit"></p-button>
-      </div>
-    </form>
-  </div>
+  <app-search [currentComponent]="componentName"></app-search>
+</div>
+<div class="alert">
+  <p-toast [showTransitionOptions]="'500ms'" [hideTransitionOptions]="'4000ms'"></p-toast>
 </div>

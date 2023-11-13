@@ -4,6 +4,12 @@ import {InputTextModule} from "primeng/inputtext";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ButtonModule} from "primeng/button";
 import {CalendarModule} from "primeng/calendar";
+import {DropdownModule} from "primeng/dropdown";
+import {CheckboxModule} from "primeng/checkbox";
+import {FlightsModule} from "../flights/flights.module";
+import {NgIf} from "@angular/common";
+import {SearchModule} from "../search/search.module";
+import {ToastModule} from "primeng/toast";
 
 @NgModule({
   declarations: [HomeComponent],
@@ -12,7 +18,13 @@ import {CalendarModule} from "primeng/calendar";
     FormsModule,
     ButtonModule,
     CalendarModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DropdownModule,
+    CheckboxModule,
+    FlightsModule,
+    NgIf,
+    SearchModule,
+    ToastModule
   ],
   providers: []
 })

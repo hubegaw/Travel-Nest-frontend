@@ -190,6 +190,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/JourneyDTO'
+  /v1/amadeus/flights/flight-offers:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FlightOfferDTO'
+      operationId: postFlightOffers
+      summary: post flight offers
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: post flight offers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlightOfferResponse'
 
 components:
   schemas:
@@ -264,12 +283,20 @@ components:
           type: string
         destinationLocationCode:
           type: string
-        departureCode:
+        departureDate:
           type: string
-        adult:
+        returnDate:
+          type: string
+        adults:
           type: integer
+        children:
+          type: integer
+        travelClass:
+          type: string
         nonStop:
           type: boolean
+        currencyCode:
+          type: string
         max:
           type: integer
     AuthDTO:
@@ -288,6 +315,96 @@ components:
           type: string
         tokenType:
           type: string
+    FlightOfferResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Data'
+        dictionaries:
+          $ref: '#/components/schemas/Dictionary'
+    Data:
+      type: object
+      properties:
+        type:
+          type: string
+        id:
+          type: string
+        source:
+          type: string
+        oneWay:
+          type: boolean
+        lastTicketingDate:
+          type: string
+        numberOfBookableSeats:
+          type: integer
+        itineraries:
+          type: array
+          items:
+            $ref: '#/components/schemas/Itinerary'
+        price:
+          $ref: '#/components/schemas/Price'
+    Itinerary:
+      type: object
+      properties:
+        duration:
+          type: string
+        segments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Segment'
+    Segment:
+      type: object
+      properties:
+        id:
+          type: string
+        departure:
+          $ref: '#/components/schemas/Departure'
+        arrival:
+          $ref: '#/components/schemas/Arrival'
+        numberOfStops:
+          type: integer
+        blacklistedInEU:
+          type: boolean
+        carrierCode:
+          type: string
+    Departure:
+      type: object
+      properties:
+        iataCode:
+          type: string
+        terminal:
+          type: string
+        at:
+          type: string
+    Arrival:
+      type: object
+      properties:
+        iataCode:
+          type: string
+        terminal:
+          type: string
+        at:
+          type: string
+    Price:
+      type: object
+      properties:
+        currency:
+          type: string
+        total:
+          type: string
+        base:
+          type: string
+        grandTotal:
+          type: string
+    Dictionary:
+      type: object
+      properties:
+        carriers:
+          type: object
+          additionalProperties:
+            type: string
 
   securitySchemes:
     bearerAuth:

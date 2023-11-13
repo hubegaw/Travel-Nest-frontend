@@ -14,6 +14,7 @@ import { Authenticate$Params } from '../fn/operations/authenticate';
 import { AuthResponse } from '../models/auth-response';
 import { deleteJourney } from '../fn/operations/delete-journey';
 import { DeleteJourney$Params } from '../fn/operations/delete-journey';
+import { FlightOfferResponse } from '../models/flight-offer-response';
 import { getAllUserJourneys } from '../fn/operations/get-all-user-journeys';
 import { GetAllUserJourneys$Params } from '../fn/operations/get-all-user-journeys';
 import { getAllUsers } from '../fn/operations/get-all-users';
@@ -25,6 +26,8 @@ import { GetUserByEmail$Params } from '../fn/operations/get-user-by-email';
 import { getUserById } from '../fn/operations/get-user-by-id';
 import { GetUserById$Params } from '../fn/operations/get-user-by-id';
 import { JourneyDto } from '../models/journey-dto';
+import { postFlightOffers } from '../fn/operations/post-flight-offers';
+import { PostFlightOffers$Params } from '../fn/operations/post-flight-offers';
 import { register } from '../fn/operations/register';
 import { Register$Params } from '../fn/operations/register';
 import { saveJourney } from '../fn/operations/save-journey';
@@ -401,6 +404,39 @@ export class ApiService extends BaseService {
   getJourney(params: GetJourney$Params, context?: HttpContext): Observable<JourneyDto> {
     return this.getJourney$Response(params, context).pipe(
       map((r: StrictHttpResponse<JourneyDto>): JourneyDto => r.body)
+    );
+  }
+
+  /** Path part for operation `postFlightOffers()` */
+  static readonly PostFlightOffersPath = '/v1/amadeus/flights/flight-offers';
+
+  /**
+   * post flight offers.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `postFlightOffers()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  postFlightOffers$Response(params: PostFlightOffers$Params, context?: HttpContext): Observable<StrictHttpResponse<FlightOfferResponse>> {
+    return postFlightOffers(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * post flight offers.
+   *
+   *
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `postFlightOffers$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  postFlightOffers(params: PostFlightOffers$Params, context?: HttpContext): Observable<FlightOfferResponse> {
+    return this.postFlightOffers$Response(params, context).pipe(
+      map((r: StrictHttpResponse<FlightOfferResponse>): FlightOfferResponse => r.body)
     );
   }
 
