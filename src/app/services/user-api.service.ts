@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {ApiConfiguration} from "../api/api-configuration";
 import {HttpClient, HttpContext, HttpHeaders, HttpResponse} from "@angular/common/http";
 import {ApiService} from "../api/services";
-import {Observable, tap} from "rxjs";
+import {Observable} from "rxjs";
 import {UserDto} from "../api/models/user-dto";
 import {StrictHttpResponse} from "../api/strict-http-response";
 import {RequestBuilder} from "../api/request-builder";
@@ -32,6 +32,31 @@ export class UserApiService extends ApiService {
     return this.http.request(
       rb.build({ responseType: 'json', accept: 'application/json', context })
     ).pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<AuthResponse>;
+      })
+    );
+  }
+
+  override refreshAccessToken$Response(params: {}, context?: HttpContext): Observable<StrictHttpResponse<AuthResponse>> {
+    const rb = new RequestBuilder(this.rootUrl, ApiService.RefreshAccessTokenPath, 'post');
+
+    const refreshToken = this.getRefreshToken();
+
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer ' + refreshToken,
+    })
+
+    const httpRequest = rb.build<Array<UserDto>>({
+      responseType: 'json',
+      accept: 'application/json',
+      context: context,
+    })
+
+    const modifiedRequest = httpRequest.clone({headers});
+
+    return this.http.request(modifiedRequest).pipe(
       filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
         return r as StrictHttpResponse<AuthResponse>;
@@ -165,5 +190,9 @@ export class UserApiService extends ApiService {
 
   private getAccessToken() {
     this.accessToken = localStorage.getItem('access_token');
+  }
+
+  private getRefreshToken() {
+    return localStorage.getItem('refresh_token');
   }
 }

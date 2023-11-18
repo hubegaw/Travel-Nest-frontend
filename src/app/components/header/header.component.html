@@ -13,7 +13,7 @@
     </p-menubar>
   </div>
   <p-dialog [(visible)]="displayLoginDialog" [modal]="true" header="Login" [dismissableMask]="true">
-    <app-login (closeDialog)="displayLoginDialog = false"></app-login>
+    <app-login (closeDialog)="closeLoginDialog()"></app-login>
   </p-dialog>
 </div>
 

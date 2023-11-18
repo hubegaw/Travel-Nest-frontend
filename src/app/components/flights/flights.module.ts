@@ -10,6 +10,9 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {RippleModule} from "primeng/ripple";
 import {TableModule} from "primeng/table";
 import {SearchModule} from "../search/search.module";
+import {NgIf} from "@angular/common";
+import {CardModule} from "primeng/card";
+import {DataViewModule} from "primeng/dataview";
 
 @NgModule({
     declarations: [FlightsComponent],
@@ -23,7 +26,10 @@ import {SearchModule} from "../search/search.module";
     ReactiveFormsModule,
     RippleModule,
     TableModule,
-    SearchModule
+    SearchModule,
+    NgIf,
+    CardModule,
+    DataViewModule
   ],
     exports: [
         FlightsComponent

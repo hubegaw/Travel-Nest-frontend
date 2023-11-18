@@ -1,1 +1,92 @@
-<p>journey works!</p>
+<div id="journey-container">
+  <p-splitter [style]="{ height: '100%' }" styleClass="mb-5">
+    <ng-template pTemplate>
+      <form [formGroup]="journeyForm" *ngIf="action === 'add'" (ngSubmit)="onSubmit()">
+        <div class="inputs">
+          <div class="card">
+            <h3>What is your start point?</h3>
+            <span class="p-float-label">
+              <p-calendar id="startDate" formControlName="startDate" [showButtonBar]="true"/>
+              <label htmlFor="startDate">Start Date</label>
+            </span>
+            <span class="p-float-label">
+              <input pInputText id="originCountry" formControlName="originCountry"/>
+              <label htmlFor="originCountry">Country</label>
+            </span>
+            <span class="p-float-label">
+              <input pInputText id="originCity" formControlName="originCity"/>
+              <label htmlFor="originCity">City</label>
+            </span>
+            <span class="p-float-label">
+              <input pInputText id="originCStreet" formControlName="originStreet"/>
+              <label htmlFor="originStreet">Street</label>
+            </span>
+            <span class="p-float-label">
+              <input pInputText id="originHouseNumber" formControlName="originHouseNumber"/>
+              <label htmlFor="originHouseNumber">House Number</label>
+            </span>
+          </div>
+          <div class="card">
+            <h3>Where are you going?</h3>
+            <span class="p-float-label">
+              <p-calendar id="endDate" formControlName="endDate" [showButtonBar]="true"/>
+              <label htmlFor="endDate">End Date</label>
+            </span>
+            <span class="p-float-label">
+              <input pInputText id="destinationCountry" formControlName="destinationCountry"/>
+              <label htmlFor="destinationCountry">Country</label>
+            </span>
+            <span class="p-float-label">
+              <input pInputText id="destinationCity" formControlName="destinationCity"/>
+              <label htmlFor="destinationCity">City</label>
+            </span>
+            <span class="p-float-label">
+              <input pInputText id="destinationStreet" formControlName="destinationStreet"/>
+              <label htmlFor="destinationStreet">Street</label>
+            </span>
+            <span class="p-float-label">
+              <input pInputText id="destinationHouseNumber" formControlName="destinationHouseNumber"/>
+              <label htmlFor="destinationHouseNumber">House Number</label>
+            </span>
+          </div>
+          <div class="card">
+            <h3>Points Of Interest</h3>
+            <div class="btn-container">
+              <span *ngIf="pois.length === 0">Choose from the map</span>
+              <button pButton *ngFor="let poi of pois" (click)="centerMapOnPoi(poi)"
+                      class="bg-primary-reverse">{{ poi.name }}
+                <p-button icon="pi pi-times" [rounded]="true" severity="danger" [text]="true" size="small" (click)="onDeletePoi(poi.name)"></p-button>
+              </button>
+            </div>
+          </div>
+          <div class="card">
+            <h3>How do you get there?</h3>
+            <div class="btn-container">
+              <button pButton class="bg-primary-reverse">Plane</button>
+              <button pButton class="bg-primary-reverse">Car</button>
+              <button pButton class="bg-primary-reverse">Other</button>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Where do you stay?</h3>
+            <div class="btn-container">
+              <button pButton class="bg-primary-reverse">Hotel</button>
+              <button pButton class="bg-primary-reverse">Other</button>
+            </div>
+          </div>
+        </div>
+        <div class="card submit-button">
+          <p-button type="submit" label="Submit"></p-button>
+        </div>
+      </form>
+    </ng-template>
+    <ng-template pTemplate>
+      <div class="map-wrap">
+        <div class="map" #map></div>
+      </div>
+    </ng-template>
+  </p-splitter>
+</div>
+<div class="alert">
+  <p-toast [showTransitionOptions]="'500ms'" [hideTransitionOptions]="'2000ms'"></p-toast>
+</div>

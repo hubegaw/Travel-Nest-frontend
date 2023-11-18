@@ -37,6 +37,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthResponse'
+  /auth/refresh-token:
+    post:
+      summary: Refreshes the access token
+      operationId: refreshAccessToken
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Access token refreshed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: Unauthorized - Invalid refresh token
+        '500':
+          description: Internal server error
   /v1/users:
     get:
       operationId: getAllUsers
@@ -143,20 +160,6 @@ paths:
       responses:
         '201':
           description: save journey
-    put:
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/JourneyDTO'
-      operationId: updateJourney
-      summary: update journey
-      security:
-        - bearerAuth: [ ]
-      responses:
-        '200':
-          description: update journey
     delete:
       parameters:
         - name: id
@@ -190,6 +193,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/JourneyDTO'
+    put:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      operationId: updateJourney
+      summary: Update journey
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: update journey
   /v1/amadeus/flights/flight-offers:
     post:
       requestBody:
@@ -234,7 +252,7 @@ components:
           type: string
         user:
           type: string
-        start_place:
+        startPlace:
           type: object
           items:
             $ref: '#/components/schemas/AddressDTO'
@@ -242,39 +260,37 @@ components:
           type: object
           items:
             $ref: '#/components/schemas/AddressDTO'
-        start_date:
+        startDate:
           type: string
-        end_date:
+        endDate:
           type: string
-        places_to_visit:
+        placesToVisit:
           type: array
           items:
             $ref: '#/components/schemas/PlaceDTO'
     PlaceDTO:
       type: object
       properties:
-        place_address:
-          type: object
-          items:
-            $ref: '#/components/schemas/AddressDTO'
-        phone_number:
+        type:
           type: string
+        name:
+          type: string
+        coordinates:
+          type: array
+          items:
+            type: number
     AddressDTO:
       type: object
       properties:
         country:
           type: string
-        voivodeship:
-          type: string
         city:
-          type: string
-        zip_code:
           type: string
         street:
           type: string
-        house_number:
+        houseNumber:
           type: string
-        apartment_number:
+        apartmentNumber:
           type: string
     FlightOfferDTO:
       type: object

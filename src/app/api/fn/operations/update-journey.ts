@@ -6,15 +6,18 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { JourneyDto } from '../../models/journey-dto';
 
 export interface UpdateJourney$Params {
-      body: JourneyDto
+  id: string;
+      body: {
+[key: string]: any;
+}
 }
 
 export function updateJourney(http: HttpClient, rootUrl: string, params: UpdateJourney$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
   const rb = new RequestBuilder(rootUrl, updateJourney.PATH, 'put');
   if (params) {
+    rb.path('id', params.id, {});
     rb.body(params.body, 'application/json');
   }
 
@@ -28,4 +31,4 @@ export function updateJourney(http: HttpClient, rootUrl: string, params: UpdateJ
   );
 }
 
-updateJourney.PATH = '/v1/journeys';
+updateJourney.PATH = '/v1/journeys/{id}';

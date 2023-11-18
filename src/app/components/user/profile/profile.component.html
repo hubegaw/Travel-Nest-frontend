@@ -1,1 +1,81 @@
-<p>profile works!</p>
+<div id="profile-container">
+  <div id="info">
+    <div id="user-details" class="card flex justify-content-center">
+      <p-card header="User Details" *ngIf="userDetails">
+        <div class="detail flex">
+          <div class="value">First Name: </div>
+          <div class="key">{{userDetails.firstName}}</div>
+        </div>
+        <div class="detail flex">
+          <div class="value">Last Name: </div>
+          <div class="key">{{userDetails.lastName}}</div>
+        </div>
+        <div class="detail flex">
+          <div class="value">Email Address: </div>
+          <div class="key">{{userDetails.email}}</div>
+        </div>
+        <div class="detail flex">
+          <div class="value">Phone Number: </div>
+          <div class="key">{{userDetails.phoneNumber}}</div>
+        </div>
+        <div class="detail flex">
+          <div class="value">Since: </div>
+          <div class="key">{{userDetails.createdAt.substr(0,10)}}</div>
+        </div>
+      </p-card>
+    </div>
+    <div id="journeys" class="card flex justify-content-center">
+      <p-card header="Your Journeys" *ngIf="journeys">
+        <p-button type="button" label="Add New Journey" (click)="onJourneyAction('add')" [text]="true"></p-button>
+        <p-table [value]="journeys" selectionMode="single" [scrollable]="true" scrollHeight="250px" [virtualScroll]="true" [(selection)]="selectedJourney" dataKey="id"
+                 (onRowSelect)="onJourneyAction('show')">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>From</th>
+              <th></th>
+              <th>To</th>
+              <th></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-journey>
+            <tr [pSelectableRow]="journey">
+              <td>{{journey.startDate.substr(0,10)}}</td>
+              <td>{{journey.startPlace.country}}</td>
+              <td>{{journey.endDate.substr(0,10)}}</td>
+              <td>{{journey.destination.country}}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-card>
+    </div>
+  </div>
+  <div id="current-journey" class="card flex justify-content-center">
+    <p-card header="{{currentJourneyHeader}}">
+      <div class="grid" *ngIf="currentJourney$ | async as currentJourney" id="journey-highlight">
+        <div class="col-2 text-center">
+          <div class="upper">
+            <span><b>{{currentJourney.startPlace.country}}</b></span>
+          </div>
+          <div class="lower">
+            <span>{{currentJourney.startDate.substr(0,10)}}</span>
+          </div>
+        </div>
+        <div class="col-1 text-center">
+          <span><i class="pi pi-arrow-right"></i></span>
+        </div>
+        <div class="col-2 text-center">
+          <div class="upper">
+            <span><b>{{currentJourney.destination.country}}</b></span>
+          </div>
+          <div class="lower">
+            <span>{{currentJourney.endDate.substr(0,10)}}</span>
+          </div>
+        </div>
+        <div *ngIf="upcomingJourneyCountdown" class="col-2 col-offset-5 text-center"><i class="pi pi-clock"></i><b>{{upcomingJourneyCountdown}}</b></div>
+      </div>
+    </p-card>
+  </div>
+  <p-dialog [(visible)]="displayJourneyDialog" [modal]="true" header="Journey" [dismissableMask]="true" (onHide)="onDialogClose()">>
+    <app-journey [journey]="selectedJourney" [action]="journeyAction" (closeDialog)="displayJourneyDialog = false"></app-journey>
+  </p-dialog>
+</div>

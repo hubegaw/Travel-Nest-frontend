@@ -18,8 +18,8 @@ import {MatIconModule} from "@angular/material/icon";
 import {FlightsModule} from "./components/flights/flights.module";
 import {ButtonModule} from "primeng/button";
 import {SearchModule} from "./components/search/search.module";
-import { JourneyComponent } from './components/user/journey/journey.component';
-import { ProfileComponent } from './components/user/profile/profile.component';
+import {ProfileModule} from "./components/user/profile/user.module";
+import {JourneyModule} from "./components/user/journey/journey.module";
 
 @NgModule({
   declarations: [
@@ -27,9 +27,7 @@ import { ProfileComponent } from './components/user/profile/profile.component';
     ForbiddenComponent,
     NotFoundComponent,
     UnauthorizedComponent,
-    RegisterComponent,
-    JourneyComponent,
-    ProfileComponent
+    RegisterComponent
   ],
     imports: [
         BrowserModule,
@@ -37,6 +35,8 @@ import { ProfileComponent } from './components/user/profile/profile.component';
         HomeModule,
         FlightsModule,
         SearchModule,
+        ProfileModule,
+        JourneyModule,
         LoginModule,
         HeaderComponent,
         FooterComponent,

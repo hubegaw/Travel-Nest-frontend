@@ -1,11 +1,9 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface AddressDto {
-  apartment_number?: string;
+  apartmentNumber?: string;
   city?: string;
   country?: string;
-  house_number?: string;
+  houseNumber?: string;
   street?: string;
-  voivodeship?: string;
-  zip_code?: string;
 }

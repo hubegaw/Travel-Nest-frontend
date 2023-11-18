@@ -10,6 +10,7 @@ import {PasswordModule} from "primeng/password";
 import {MenubarModule} from "primeng/menubar";
 import {LoginModule} from "../login/login.module";
 import {DialogModule} from "primeng/dialog";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-header',
@@ -21,6 +22,7 @@ import {DialogModule} from "primeng/dialog";
 })
 export class HeaderComponent implements OnInit {
   protected readonly authService = inject(AuthenticationService);
+  protected readonly router = inject(Router);
   itemsUser: MenuItem[] = [];
   itemsGuest: MenuItem[] = [];
   displayLoginDialog: boolean = false;
@@ -48,9 +50,11 @@ export class HeaderComponent implements OnInit {
         routerLink: '/user/profile'
       },
       {
-        label: 'Journeys',
+        label: 'Add journey',
         icon: 'pi pi-car',
-        routerLink: '/user/journeys'
+        command: () => {
+          this.router.navigate(['/user/profile'], { queryParams: { action: 'addJourney' } });
+        }
       },
       {
         label: 'Logout',
@@ -85,5 +89,9 @@ export class HeaderComponent implements OnInit {
         }
       }
     ]
+  }
+
+  closeLoginDialog() {
+    this.displayLoginDialog = false;
   }
 }

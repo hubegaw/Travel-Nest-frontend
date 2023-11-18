@@ -28,6 +28,8 @@ import { GetUserById$Params } from '../fn/operations/get-user-by-id';
 import { JourneyDto } from '../models/journey-dto';
 import { postFlightOffers } from '../fn/operations/post-flight-offers';
 import { PostFlightOffers$Params } from '../fn/operations/post-flight-offers';
+import { refreshAccessToken } from '../fn/operations/refresh-access-token';
+import { RefreshAccessToken$Params } from '../fn/operations/refresh-access-token';
 import { register } from '../fn/operations/register';
 import { Register$Params } from '../fn/operations/register';
 import { saveJourney } from '../fn/operations/save-journey';
@@ -106,6 +108,39 @@ export class ApiService extends BaseService {
    */
   authenticate(params: Authenticate$Params, context?: HttpContext): Observable<AuthResponse> {
     return this.authenticate$Response(params, context).pipe(
+      map((r: StrictHttpResponse<AuthResponse>): AuthResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `refreshAccessToken()` */
+  static readonly RefreshAccessTokenPath = '/auth/refresh-token';
+
+  /**
+   * Refreshes the access token.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `refreshAccessToken()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  refreshAccessToken$Response(params?: RefreshAccessToken$Params, context?: HttpContext): Observable<StrictHttpResponse<AuthResponse>> {
+    return refreshAccessToken(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Refreshes the access token.
+   *
+   *
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `refreshAccessToken$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  refreshAccessToken(params?: RefreshAccessToken$Params, context?: HttpContext): Observable<AuthResponse> {
+    return this.refreshAccessToken$Response(params, context).pipe(
       map((r: StrictHttpResponse<AuthResponse>): AuthResponse => r.body)
     );
   }
@@ -275,39 +310,6 @@ export class ApiService extends BaseService {
     );
   }
 
-  /** Path part for operation `updateJourney()` */
-  static readonly UpdateJourneyPath = '/v1/journeys';
-
-  /**
-   * update journey.
-   *
-   *
-   *
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `updateJourney()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  updateJourney$Response(params: UpdateJourney$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return updateJourney(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * update journey.
-   *
-   *
-   *
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `updateJourney$Response()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  updateJourney(params: UpdateJourney$Params, context?: HttpContext): Observable<void> {
-    return this.updateJourney$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
-    );
-  }
-
   /** Path part for operation `saveJourney()` */
   static readonly SaveJourneyPath = '/v1/journeys';
 
@@ -404,6 +406,39 @@ export class ApiService extends BaseService {
   getJourney(params: GetJourney$Params, context?: HttpContext): Observable<JourneyDto> {
     return this.getJourney$Response(params, context).pipe(
       map((r: StrictHttpResponse<JourneyDto>): JourneyDto => r.body)
+    );
+  }
+
+  /** Path part for operation `updateJourney()` */
+  static readonly UpdateJourneyPath = '/v1/journeys/{id}';
+
+  /**
+   * Update journey.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `updateJourney()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  updateJourney$Response(params: UpdateJourney$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return updateJourney(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Update journey.
+   *
+   *
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `updateJourney$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  updateJourney(params: UpdateJourney$Params, context?: HttpContext): Observable<void> {
+    return this.updateJourney$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
     );
   }
 

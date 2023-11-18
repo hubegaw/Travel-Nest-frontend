@@ -1,58 +1,68 @@
-<div id="search-container" class="card">
+<div id="search-container">
   <p-panel>
-    <ng-template pTemplate="header" id="search-options"  *ngIf="currentComponent === 'home'">
+    <ng-template pTemplate="header" id="search-options" *ngIf="currentComponent === 'home'">
       <p-button label="Flights" class="search-button" (click)="currentForm = 'flights'"></p-button>
       <p-button label="Hotels" class="search-button" (click)="currentForm = 'hotels'"></p-button>
       <p-button label="Car Rental" class="search-button" (click)="currentForm = 'carRental'"></p-button>
     </ng-template>
     <form [formGroup]="searchForm" (ngSubmit)="searchFlights(searchForm)" *ngIf="currentForm === 'flights'">
-      <div class="card">
-        <span class="p-float-label">
-            <input pInputText id="departure" formControlName="departure"/>
-            <label htmlFor="departure">From</label>
-        </span>
-        <div class="nonStop">
-          <p-checkbox formControlName="nonStop" [binary]="true" id="nonStop"></p-checkbox>
-          <label for="nonStop">direct flight</label>
+      <div class="grid">
+        <div class="col">
+          <div>
+            <span class="p-float-label">
+              <input pInputText id="departure" formControlName="departure"/>
+              <label htmlFor="departure">From</label>
+            </span>
+            <p-checkbox formControlName="nonStop" [binary]="true" id="nonStop"></p-checkbox>
+            <label for="nonStop">direct flight</label>
+          </div>
         </div>
-      </div>
-      <div class="card">
-        <span class="p-float-label">
-            <input pInputText id="arrival" formControlName="arrival"/>
-            <label htmlFor="arrival">To</label>
-        </span>
-      </div>
-      <div class="card">
-        <span class="p-float-label">
-            <p-calendar id="startDate" formControlName="startDate" [showButtonBar]="true"/>
-            <label htmlFor="startDate">Depart</label>
-        </span>
-      </div>
-      <div class="card">
-        <span class="p-float-label">
-            <p-calendar id="endDate" formControlName="endDate" [showButtonBar]="true"/>
-            <label htmlFor="endDate">Return</label>
-        </span>
-      </div>
-      <div class="card">
-        <div class="criteria">
-          <span class="p-float-label">
+        <div class="col">
+          <div>
+            <span class="p-float-label">
+              <input pInputText id="arrival" formControlName="arrival"/>
+              <label htmlFor="arrival">To</label>
+            </span>
+          </div>
+        </div>
+        <div class="col">
+          <div>
+            <span class="p-float-label">
+              <p-calendar id="startDate" formControlName="startDate" [showButtonBar]="true"/>
+              <label htmlFor="startDate">Depart</label>
+            </span>
+          </div>
+        </div>
+        <div class="col">
+          <div>
+            <span class="p-float-label">
+              <p-calendar id="endDate" formControlName="endDate" [showButtonBar]="true"/>
+              <label htmlFor="endDate">Return</label>
+            </span>
+          </div>
+        </div>
+        <div class="col">
+          <div>
+            <span class="p-float-label space">
               <input pInputText id="adults" formControlName="adults"/>
               <label htmlFor="adults">Adults</label>
-          </span>
-          <span class="p-float-label">
+            </span>
+            <span class="p-float-label space">
               <input pInputText id="children" formControlName="children"/>
               <label htmlFor="children">Children</label>
-          </span>
-          <span class="p-float-label">
+            </span>
+            <span class="p-float-label">
               <p-dropdown [options]="travelClasses" formControlName="travelClass" id="travelClass"
                           placeholder="Select a travel class"></p-dropdown>
-            <label htmlFor="travelClass">Travel Class</label>
-          </span>
+              <label htmlFor="travelClass">Travel Class</label>
+            </span>
+          </div>
         </div>
-      </div>
-      <div class="card">
-        <p-button type="submit" label="Submit"></p-button>
+        <div class="col">
+          <div>
+            <p-button type="submit" label="Submit"></p-button>
+          </div>
+        </div>
       </div>
     </form>
   </p-panel>
