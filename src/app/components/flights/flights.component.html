@@ -2,44 +2,156 @@
   <div id="search-wrapper">
     <app-search></app-search>
   </div>
-  <p-card id="table-wrapper" *ngIf="result.length != 0">
-    <p-table [value]="result" dataKey="id" [tableStyle]="{ 'min-width': '60rem' }" [rows]="10"
-             [showCurrentPageReport]="true"
-             [rowsPerPageOptions]="[10, 25, 50]"
-             [paginator]="true"
-             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
-      <ng-template pTemplate="body" let-flight>
-        <div class="grid">
-          <div class="col-1 text-center">
-            <span>{{flight.itineraries[0].segments[0].carrierCode}}</span>
-          </div>
-          <div class="col-1 segment">
-            <div class="upper">
-              <span>{{ flight.itineraries[0].segments[0].departure.at.substr(11, 5) }}</span>
+  <div id="table-wrapper">
+    <p-card *ngIf="result.length != 0">
+      <p-table [value]="result" dataKey="id" [tableStyle]="{ 'min-width': '60rem' }" [rows]="10"
+               [showCurrentPageReport]="true"
+               [rowsPerPageOptions]="[10, 25, 50]"
+               [paginator]="true"
+               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+        <ng-template pTemplate="body" let-flight>
+          <div class="grid">
+            <div class="col-1 text-center">
+              <span>{{flight.itineraries[0].segments[0].carrierCode}}</span>
             </div>
-            <div class="lower">
-              <span>{{flight.itineraries[0].segments[0].departure.iataCode}}</span>
+            <div class="col-1 segment">
+              <div class="upper">
+                <span>{{ flight.itineraries[0].segments[0].departure.at.substr(11, 5) }}</span>
+              </div>
+              <div class="lower">
+                <span>{{flight.itineraries[0].segments[0].departure.iataCode}}</span>
+              </div>
+            </div>
+            <div class="col-1 segment">
+              <span><i class="pi pi-arrow-right"></i></span>
+            </div>
+            <div class="col-1 segment">
+              <div class="upper">
+                <span>{{ flight.itineraries[0].segments[0].arrival.at.substr(11, 5) }}</span>
+              </div>
+              <div class="lower">
+                <span>{{flight.itineraries[0].segments[0].arrival.iataCode}}</span>
+              </div>
+            </div>
+            <div class="col-1 segment" *ngIf="flight.itineraries[0].segments[1]">
+              <span><i class="pi pi-minus"></i></span>
+            </div>
+            <div class="col-1 text-center" *ngIf="flight.itineraries[0].segments[1]">
+              <span>{{flight.itineraries[0].segments[1].carrierCode}}</span>
+            </div>
+            <div class="col-1 segment" *ngIf="flight.itineraries[0].segments[1]">
+              <div class="upper">
+                <span>{{ flight.itineraries[0].segments[1].departure.at.substr(11, 5) }}</span>
+              </div>
+              <div class="lower">
+                <span>{{flight.itineraries[0].segments[1].departure.iataCode}}</span>
+              </div>
+            </div>
+            <div class="col-1 segment" *ngIf="flight.itineraries[0].segments[1]">
+              <span><i class="pi pi-arrow-right"></i></span>
+            </div>
+            <div class="col-1 segment" *ngIf="flight.itineraries[0].segments[1]">
+              <div class="upper">
+                <span>{{ flight.itineraries[0].segments[1].arrival.at.substr(11, 5) }}</span>
+              </div>
+              <div class="lower">
+                <span>{{flight.itineraries[0].segments[1].arrival.iataCode}}</span>
+              </div>
+            </div>
+            <div class="col-1 text-center">
+              <span>{{ flight.price.grandTotal + ' ' + flight.price.currency }}</span>
+            </div>
+            <div class="col-1">
+              <button type="button" pButton pRipple label="select" icon="pi pi-plus"
+                      (click)="showJourneys($event, flight, op)">
+              </button>
+            </div>
+            <p-overlayPanel #op>
+              <p-table [value]="journeys$ | async">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Select journey to add flight</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-journey>
+                  <div class="flex flex-row flex-wrap journey-row" (click)="addFlightToJourney(journey)">
+                    <div class="flex flex-column align-items-center justify-content-center">
+                      <div class="upper">
+                        <span><b>{{journey.startPlace.country}}</b></span>
+                      </div>
+                      <div class="lower">
+                        <span>{{journey.startDate.substr(0, 10)}}</span>
+                      </div>
+                    </div>
+                    <div class="flex align-items-center justify-content-center middle">
+                      <span><i class="pi pi-arrow-right"></i></span>
+                    </div>
+                    <div class="flex flex-column align-items-center justify-content-center">
+                      <div class="upper">
+                        <span><b>{{journey.destination.country}}</b></span>
+                      </div>
+                      <div class="lower">
+                        <span>{{journey.endDate.substr(0, 10)}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </p-table>
+            </p-overlayPanel>
+          </div>
+          <div class="grid" *ngIf="flight.oneWay === false && flight.itineraries[1]">
+            <div class="col-1 text-center">
+              <span>{{flight.itineraries[1].segments[0].carrierCode}}</span>
+            </div>
+            <div class="col-1 segment">
+              <div class="upper">
+                <span>{{ flight.itineraries[1].segments[0].departure.at.substr(11, 5) }}</span>
+              </div>
+              <div class="lower">
+                <span>{{flight.itineraries[1].segments[0].departure.iataCode}}</span>
+              </div>
+            </div>
+            <div class="col-1 segment">
+              <span><i class="pi pi-arrow-right"></i></span>
+            </div>
+            <div class="col-1 segment">
+              <div class="upper">
+                <span>{{ flight.itineraries[1].segments[0].arrival.at.substr(11, 5) }}</span>
+              </div>
+              <div class="lower">
+                <span>{{flight.itineraries[1].segments[0].arrival.iataCode}}</span>
+              </div>
+            </div>
+            <div class="col-1 segment" *ngIf="flight.itineraries[1].segments[1]">
+              <span><i class="pi pi-minus"></i></span>
+            </div>
+            <div class="col-1 text-center" *ngIf="flight.itineraries[1].segments[1]">
+              <span>{{flight.itineraries[1].segments[1].carrierCode}}</span>
+            </div>
+            <div class="col-1 segment" *ngIf="flight.itineraries[1].segments[1]">
+              <div class="upper">
+                <span>{{ flight.itineraries[1].segments[1].departure.at.substr(11, 5) }}</span>
+              </div>
+              <div class="lower">
+                <span>{{flight.itineraries[1].segments[1].departure.iataCode}}</span>
+              </div>
+            </div>
+            <div class="col-1 segment" *ngIf="flight.itineraries[1].segments[1]">
+              <span><i class="pi pi-arrow-right"></i></span>
+            </div>
+            <div class="col-1 segment" *ngIf="flight.itineraries[1].segments[1]">
+              <div class="upper">
+                <span>{{ flight.itineraries[1].segments[1].arrival.at.substr(11, 5) }}</span>
+              </div>
+              <div class="lower">
+                <span>{{flight.itineraries[1].segments[1].arrival.iataCode}}</span>
+              </div>
             </div>
           </div>
-          <div class="col-1 segment">
-            <span><i class="pi pi-minus" ></i></span>
-          </div>
-          <div class="col-1 segment">
-            <div class="upper">
-              <span>{{ flight.itineraries[0].segments[0].arrival.at.substr(11, 5) }}</span>
-            </div>
-            <div class="lower">
-              <span>{{flight.itineraries[0].segments[0].arrival.iataCode}}</span>
-            </div>
-          </div>
-          <div class="col-1 text-center">
-            <span>{{ flight.price.grandTotal + ' ' + flight.price.currency }}</span>
-          </div>
-          <div class="col-1">
-            <button type="button" pButton pRipple label="select" icon="pi pi-plus"></button>
-          </div>
-        </div>
-      </ng-template>
-    </p-table>
-  </p-card>
+        </ng-template>
+      </p-table>
+    </p-card>
+    <p-card *ngIf="result.length == 0" class="flex justify-content-center align-items-center no-flights"><span
+      style="font-size: 1.3rem;">No flights available!</span></p-card>
+  </div>
 </div>

@@ -9,22 +9,28 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
+import { AirportAndCityResponse } from '../models/airport-and-city-response';
 import { authenticate } from '../fn/operations/authenticate';
 import { Authenticate$Params } from '../fn/operations/authenticate';
 import { AuthResponse } from '../models/auth-response';
 import { deleteJourney } from '../fn/operations/delete-journey';
 import { DeleteJourney$Params } from '../fn/operations/delete-journey';
 import { FlightOfferResponse } from '../models/flight-offer-response';
+import { getAirports } from '../fn/operations/get-airports';
+import { GetAirports$Params } from '../fn/operations/get-airports';
 import { getAllUserJourneys } from '../fn/operations/get-all-user-journeys';
 import { GetAllUserJourneys$Params } from '../fn/operations/get-all-user-journeys';
 import { getAllUsers } from '../fn/operations/get-all-users';
 import { GetAllUsers$Params } from '../fn/operations/get-all-users';
+import { getHotels } from '../fn/operations/get-hotels';
+import { GetHotels$Params } from '../fn/operations/get-hotels';
 import { getJourney } from '../fn/operations/get-journey';
 import { GetJourney$Params } from '../fn/operations/get-journey';
 import { getUserByEmail } from '../fn/operations/get-user-by-email';
 import { GetUserByEmail$Params } from '../fn/operations/get-user-by-email';
 import { getUserById } from '../fn/operations/get-user-by-id';
 import { GetUserById$Params } from '../fn/operations/get-user-by-id';
+import { HotelResponse } from '../models/hotel-response';
 import { JourneyDto } from '../models/journey-dto';
 import { postFlightOffers } from '../fn/operations/post-flight-offers';
 import { PostFlightOffers$Params } from '../fn/operations/post-flight-offers';
@@ -472,6 +478,72 @@ export class ApiService extends BaseService {
   postFlightOffers(params: PostFlightOffers$Params, context?: HttpContext): Observable<FlightOfferResponse> {
     return this.postFlightOffers$Response(params, context).pipe(
       map((r: StrictHttpResponse<FlightOfferResponse>): FlightOfferResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `getAirports()` */
+  static readonly GetAirportsPath = '/v1/amadeus/airports';
+
+  /**
+   * get airports.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getAirports()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  getAirports$Response(params: GetAirports$Params, context?: HttpContext): Observable<StrictHttpResponse<AirportAndCityResponse>> {
+    return getAirports(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * get airports.
+   *
+   *
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getAirports$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  getAirports(params: GetAirports$Params, context?: HttpContext): Observable<AirportAndCityResponse> {
+    return this.getAirports$Response(params, context).pipe(
+      map((r: StrictHttpResponse<AirportAndCityResponse>): AirportAndCityResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `getHotels()` */
+  static readonly GetHotelsPath = '/v1/amadeus/hotels';
+
+  /**
+   * get hotels.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getHotels()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  getHotels$Response(params: GetHotels$Params, context?: HttpContext): Observable<StrictHttpResponse<HotelResponse>> {
+    return getHotels(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * get hotels.
+   *
+   *
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getHotels$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  getHotels(params: GetHotels$Params, context?: HttpContext): Observable<HotelResponse> {
+    return this.getHotels$Response(params, context).pipe(
+      map((r: StrictHttpResponse<HotelResponse>): HotelResponse => r.body)
     );
   }
 

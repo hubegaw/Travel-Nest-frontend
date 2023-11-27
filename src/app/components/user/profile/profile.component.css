@@ -51,12 +51,15 @@ p-card, #current-journey, detail {
   font-size: 1.1rem;
 }
 
-.col-1.text-center, .col-2.col-offset-5.text-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.middle {
+  margin: 0 20px;
+}
+
+.clock {
+  margin-left: auto;
 }
 
 .pi.pi-clock {
   margin-right: 10px;
 }
+

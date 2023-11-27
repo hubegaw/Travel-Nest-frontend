@@ -4,25 +4,28 @@ import {
   ElementRef,
   EventEmitter,
   inject,
-  Input,
+  Input, OnChanges,
   OnDestroy,
   OnInit,
-  Output,
+  Output, SimpleChanges,
   ViewChild
 } from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {config, Map, MapStyle, Marker} from '@maptiler/sdk';
 import {MessageService} from "primeng/api";
 import {JourneyApiService} from "../../../services/journey-api.service";
+import {Observable} from "rxjs";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-journey',
   templateUrl: './journey.component.html',
   styleUrls: ['./journey.component.css']
 })
-export class JourneyComponent implements OnInit, AfterViewInit, OnDestroy {
+export class JourneyComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   private readonly messageService = inject(MessageService);
   private readonly journeyService = inject(JourneyApiService);
+  private readonly httpClient = inject(HttpClient);
   @Input() journey!: any;
   @Input() action!: string;
   @Output() closeDialog = new EventEmitter<void>();
@@ -30,6 +33,8 @@ export class JourneyComponent implements OnInit, AfterViewInit, OnDestroy {
   journeyForm!: FormGroup;
   pois: any[] = [];
   private markers: { [poiName: string]: Marker } = {};
+  private baseUrl: string = 'https://api.maptiler.com/geocoding/';
+  private apiKey: string = 'GdBykHsvbdFF4ciOF3wi';
 
   @ViewChild('map')
   private mapContainer!: ElementRef<HTMLElement>;
@@ -50,11 +55,11 @@ export class JourneyComponent implements OnInit, AfterViewInit, OnDestroy {
       user: new FormControl('1')
     });
 
-    config.apiKey = 'GdBykHsvbdFF4ciOF3wi'
+    config.apiKey = this.apiKey
   }
 
   ngAfterViewInit() {
-    const initialState = { lng: 35.063, lat: 30.341, zoom: 2 };
+    const initialState = {lng: 35.063, lat: 30.341, zoom: 2};
 
     this.map = new Map({
       container: this.mapContainer.nativeElement,
@@ -75,9 +80,18 @@ export class JourneyComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['journey'] && this.journey && this.action === 'show') {
+      this.loadPoisToMap(this.journey.placesToVisit);
+      this.centerMapOnCity(this.journey.destination.city);
+      this.pois = this.journey.placesToVisit;
+    }
+  }
+
   onSubmit() {
     if (this.journeyForm.valid) {
-      this.journeyService.saveJourney({body: this.mapFormToDTO()}).subscribe({next: (response) => {
+      this.journeyService.saveJourney({body: this.mapFormToDTO()}).subscribe({
+        next: (response) => {
           this.messageService.add({
             severity: 'success',
             summary: 'Journey saved',
@@ -100,12 +114,12 @@ export class JourneyComponent implements OnInit, AfterViewInit, OnDestroy {
   onPoiClick(poi: any) {
     let isAlreadySaved = false;
     this.pois.forEach(poiSaved => {
-      if(poiSaved.name === poi.properties.name) {
+      if (poiSaved.name === poi.properties.name) {
         isAlreadySaved = true;
         return
       }
     })
-    if(!isAlreadySaved) {
+    if (!isAlreadySaved) {
       const poiObject = {
         type: poi.layer.id,
         name: poi.properties.name,
@@ -137,7 +151,13 @@ export class JourneyComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   centerMapOnPoi(poi) {
-    this.map.flyTo({ center: poi.location, essential: true, zoom: 17 });
+    console.log(poi)
+    if(poi.location) {
+      this.map.flyTo({center: poi.location, essential: true, zoom: 16});
+    } else {
+      this.map.flyTo({center: poi.coordinates, essential: true, zoom: 16});
+
+    }
   }
 
   onDeletePoi(poiName: string) {
@@ -151,6 +171,30 @@ export class JourneyComponent implements OnInit, AfterViewInit, OnDestroy {
       poisFormArray.removeAt(index);
     }
     this.pois = this.pois.filter(poi => poi.name !== poiName);
+  }
+
+  loadPoisToMap(pois) {
+    pois.forEach(poi => {
+      const location = poi.coordinates;
+
+      new Marker({ color: 'blue' })
+        .setLngLat([location[0], location[1]])
+        .addTo(this.map);
+    });
+  }
+
+  private centerMapOnCity(cityName: string) {
+    this.getCoordinates(cityName).subscribe(response => {
+      if (response.features && response.features.length > 0) {
+        const coordinates = response.features[0].geometry.coordinates;
+        this.map.flyTo({center: coordinates, essential: true, zoom: 8});
+      }
+    });
+  }
+
+  getCoordinates(cityName: string): Observable<any> {
+    const url = `${this.baseUrl}${encodeURIComponent(cityName)}.json?key=${this.apiKey}`;
+    return this.httpClient.get(url);
   }
 
   mapFormToDTO(): any {

@@ -55,7 +55,8 @@
               <span *ngIf="pois.length === 0">Choose from the map</span>
               <button pButton *ngFor="let poi of pois" (click)="centerMapOnPoi(poi)"
                       class="bg-primary-reverse">{{ poi.name }}
-                <p-button icon="pi pi-times" [rounded]="true" severity="danger" [text]="true" size="small" (click)="onDeletePoi(poi.name)"></p-button>
+                <p-button icon="pi pi-times" [rounded]="true" severity="danger" [text]="true" size="small"
+                          (click)="onDeletePoi(poi.name)"></p-button>
               </button>
             </div>
           </div>
@@ -79,6 +80,37 @@
           <p-button type="submit" label="Submit"></p-button>
         </div>
       </form>
+      <div *ngIf="action === 'show' && journey" class="flex flex-wrap align-content-start" style="width: 100%; padding: 10px;">
+        <div class="flex align-items-center justify-content-start" style="width: 100%; height: 50px; font-size: 1.4rem">
+          <div class="origin flex flex-column justify-content-center align-items-center">
+            <div><b>{{journey.startPlace.country}}, {{journey.startPlace.city}}</b></div>
+            <div style="font-size: 1rem;">{{journey.startDate.substr(0,10)}}</div>
+          </div>
+          <span style="margin: 0 40px"><i class="pi pi-arrow-right"></i></span>
+          <div class="destination flex flex-column justify-content-center align-items-center">
+            <div><b>{{journey.destination.country}}, {{journey.destination.city}}</b></div>
+            <div style="font-size: 1rem;">{{journey.endDate.substr(0,10)}}</div>
+          </div>
+        </div>
+        <div class="flex">
+          <div class="card" *ngIf="pois.length != 0">
+            <h3>Points Of Interest</h3>
+            <div class="btn-container">
+              <button pButton *ngFor="let poi of pois" (click)="centerMapOnPoi(poi)"
+                      class="bg-primary-reverse">{{ poi.name }}
+                <p-button icon="pi pi-times" [rounded]="true" severity="danger" [text]="true" size="small"
+                          (click)="onDeletePoi(poi.name)"></p-button>
+              </button>
+            </div>
+          </div>
+          <div class="card" *ngIf="journey.flights != null">
+            <h3>Flights</h3>
+            <div class="btn-container">
+              <div *ngFor="let flight of journey.flights">{{ flight.itineraries[0].segments[1].departure.iataCode }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </ng-template>
     <ng-template pTemplate>
       <div class="map-wrap">

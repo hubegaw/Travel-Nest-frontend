@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { Itinerary } from '../models/itinerary';
 import { Price } from '../models/price';
-export interface Data {
+export interface FlightData {
   id?: string;
   itineraries?: Array<Itinerary>;
   lastTicketingDate?: string;

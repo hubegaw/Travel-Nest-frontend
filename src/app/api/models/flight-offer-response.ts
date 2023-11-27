@@ -1,8 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
-import { Data } from '../models/data';
 import { Dictionary } from '../models/dictionary';
+import { FlightData } from '../models/flight-data';
 export interface FlightOfferResponse {
-  data?: Array<Data>;
+  data?: Array<FlightData>;
   dictionaries?: Dictionary;
 }

@@ -8,8 +8,10 @@ import {RequestBuilder} from "../api/request-builder";
 import {filter, map} from "rxjs/operators";
 import {FlightOfferDto} from "../api/models/flight-offer-dto";
 import {FlightOfferResponse} from "../api/models/flight-offer-response";
+import {AirportAndCityResponse} from "../api/models/airport-and-city-response";
+import {AirportAndCityRequest} from "../api/models/airport-and-city-request";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class FlightService extends ApiService {
   private accessToken: any;
 
@@ -17,7 +19,9 @@ export class FlightService extends ApiService {
     super(config, http);
   }
 
-  override postFlightOffers$Response(params: { body: FlightOfferDto }, context?: HttpContext): Observable<StrictHttpResponse<FlightOfferResponse>> {
+  override postFlightOffers$Response(params: {
+    body: FlightOfferDto
+  }, context?: HttpContext): Observable<StrictHttpResponse<FlightOfferResponse>> {
     const rb = new RequestBuilder(this.rootUrl, ApiService.PostFlightOffersPath, 'post');
     if (params) {
       rb.body(params.body, 'application/json');
@@ -41,6 +45,35 @@ export class FlightService extends ApiService {
       filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
         return r as StrictHttpResponse<FlightOfferResponse>;
+      })
+    );
+  }
+
+  override getAirports$Response(params: {
+    body: AirportAndCityRequest
+  }, context?: HttpContext): Observable<StrictHttpResponse<AirportAndCityResponse>> {
+    const rb = new RequestBuilder(this.rootUrl, ApiService.GetAirportsPath, 'post');
+    if (params) {
+      rb.body(params.body, 'application/json');
+    }
+    this.getAccessToken();
+
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer ' + this.accessToken,
+    })
+
+    const httpRequest = rb.build<AirportAndCityResponse>({
+      responseType: 'json',
+      accept: 'application/json',
+      context: context,
+    })
+
+    const modifiedRequest = httpRequest.clone({headers});
+
+    return this.http.request(modifiedRequest).pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<AirportAndCityResponse>;
       })
     );
   }

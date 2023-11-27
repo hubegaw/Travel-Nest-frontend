@@ -20,6 +20,7 @@ import {ButtonModule} from "primeng/button";
 import {SearchModule} from "./components/search/search.module";
 import {ProfileModule} from "./components/user/profile/user.module";
 import {JourneyModule} from "./components/user/journey/journey.module";
+import {HotelsModule} from "./components/hotels/hotels.module";
 
 @NgModule({
   declarations: [
@@ -29,23 +30,24 @@ import {JourneyModule} from "./components/user/journey/journey.module";
     UnauthorizedComponent,
     RegisterComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HomeModule,
-        FlightsModule,
-        SearchModule,
-        ProfileModule,
-        JourneyModule,
-        LoginModule,
-        HeaderComponent,
-        FooterComponent,
-        InputTextModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        MatIconModule,
-        ButtonModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HomeModule,
+    FlightsModule,
+    SearchModule,
+    ProfileModule,
+    JourneyModule,
+    LoginModule,
+    HotelsModule,
+    HeaderComponent,
+    FooterComponent,
+    InputTextModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    MatIconModule,
+    ButtonModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

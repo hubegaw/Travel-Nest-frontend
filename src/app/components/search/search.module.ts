@@ -8,6 +8,10 @@ import {InputTextModule} from "primeng/inputtext";
 import {ReactiveFormsModule} from "@angular/forms";
 import {NgIf} from "@angular/common";
 import {PanelModule} from "primeng/panel";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {BrowserModule} from "@angular/platform-browser";
+import {AutoCompleteModule} from "primeng/autocomplete";
+import {MultiSelectModule} from "primeng/multiselect";
 
 @NgModule({
   declarations: [SearchComponent],
@@ -19,7 +23,10 @@ import {PanelModule} from "primeng/panel";
         InputTextModule,
         ReactiveFormsModule,
         NgIf,
-        PanelModule
+        PanelModule,
+        BrowserModule,
+        AutoCompleteModule,
+        MultiSelectModule
     ],
   exports: [
     SearchComponent

@@ -5,12 +5,17 @@
       <p-button label="Hotels" class="search-button" (click)="currentForm = 'hotels'"></p-button>
       <p-button label="Car Rental" class="search-button" (click)="currentForm = 'carRental'"></p-button>
     </ng-template>
-    <form [formGroup]="searchForm" (ngSubmit)="searchFlights(searchForm)" *ngIf="currentForm === 'flights'">
+    <form [formGroup]="flightForm" (ngSubmit)="searchFlights(flightForm)" *ngIf="currentForm === 'flights'">
       <div class="grid">
         <div class="col">
           <div>
             <span class="p-float-label">
-              <input pInputText id="departure" formControlName="departure"/>
+              <p-autoComplete [suggestions]="suggestions"
+                              field="label"
+                              id="departure"
+                              formControlName="departure"
+                              (completeMethod)="searchAirports($event)">
+              </p-autoComplete>
               <label htmlFor="departure">From</label>
             </span>
             <p-checkbox formControlName="nonStop" [binary]="true" id="nonStop"></p-checkbox>
@@ -20,7 +25,12 @@
         <div class="col">
           <div>
             <span class="p-float-label">
-              <input pInputText id="arrival" formControlName="arrival"/>
+              <p-autoComplete [suggestions]="suggestions"
+                              field="label"
+                              id="arrival"
+                              formControlName="arrival"
+                              (completeMethod)="searchAirports($event)">
+              </p-autoComplete>
               <label htmlFor="arrival">To</label>
             </span>
           </div>
@@ -60,7 +70,63 @@
         </div>
         <div class="col">
           <div>
-            <p-button type="submit" label="Submit"></p-button>
+            <p-button type="submit" label="Search"></p-button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <form [formGroup]="hotelForm" (ngSubmit)="searchHotels(hotelForm)" *ngIf="currentForm === 'hotels'">
+      <div class="grid">
+        <div class="col">
+          <span class="p-float-label">
+            <p-autoComplete [suggestions]="suggestions"
+                            field="label"
+                            id="city"
+                            formControlName="cityCode"
+                            (completeMethod)="searchCity($event)">
+            </p-autoComplete>
+            <label htmlFor="city">From</label>
+          </span>
+        </div>
+        <div class="col">
+          <div>
+            <span class="p-float-label">
+              <p-calendar id="checkInDate" formControlName="checkInDate" [showButtonBar]="true"></p-calendar>
+              <label htmlFor="checkInDate">Check in</label>
+            </span>
+          </div>
+        </div>
+        <div class="col">
+          <div>
+            <span class="p-float-label">
+              <p-calendar id="checkOutDate" formControlName="checkOutDate" [showButtonBar]="true"></p-calendar>
+              <label htmlFor="checkOutDate">Check out</label>
+            </span>
+          </div>
+        </div>
+        <div class="col">
+          <div>
+            <span class="p-float-label space">
+              <input pInputText id="adultsHotel" formControlName="adults"/>
+              <label htmlFor="adultsHotel">Adults</label>
+            </span>
+            <span class="p-float-label">
+              <p-multiSelect [options]="ratings" formControlName="ratings"
+                             optionLabel="label">
+              </p-multiSelect>
+              <label htmlFor="travelClass">rating</label>
+            </span>
+            <span class="p-float-label">
+              <p-multiSelect [options]="amenities" formControlName="amenities"
+                             optionLabel="label">
+              </p-multiSelect>
+              <label htmlFor="travelClass">amenities</label>
+            </span>
+          </div>
+        </div>
+        <div class="col">
+          <div>
+            <p-button type="submit" label="Search"></p-button>
           </div>
         </div>
       </div>

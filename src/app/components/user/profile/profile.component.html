@@ -51,8 +51,8 @@
   </div>
   <div id="current-journey" class="card flex justify-content-center">
     <p-card header="{{currentJourneyHeader}}">
-      <div class="grid" *ngIf="currentJourney$ | async as currentJourney" id="journey-highlight">
-        <div class="col-2 text-center">
+      <div class="flex flex-row flex-wrap" *ngIf="currentJourney$ | async as currentJourney" id="journey-highlight">
+        <div class="flex flex-column align-items-center justify-content-center">
           <div class="upper">
             <span><b>{{currentJourney.startPlace.country}}</b></span>
           </div>
@@ -60,10 +60,10 @@
             <span>{{currentJourney.startDate.substr(0,10)}}</span>
           </div>
         </div>
-        <div class="col-1 text-center">
+        <div class="flex align-items-center justify-content-center middle">
           <span><i class="pi pi-arrow-right"></i></span>
         </div>
-        <div class="col-2 text-center">
+        <div class="flex flex-column align-items-center justify-content-center">
           <div class="upper">
             <span><b>{{currentJourney.destination.country}}</b></span>
           </div>
@@ -71,11 +71,11 @@
             <span>{{currentJourney.endDate.substr(0,10)}}</span>
           </div>
         </div>
-        <div *ngIf="upcomingJourneyCountdown" class="col-2 col-offset-5 text-center"><i class="pi pi-clock"></i><b>{{upcomingJourneyCountdown}}</b></div>
+        <div *ngIf="upcomingJourneyCountdown" class="flex align-items-center justify-content-center clock"><i class="pi pi-clock"></i><b>{{upcomingJourneyCountdown}}</b></div>
       </div>
     </p-card>
   </div>
-  <p-dialog [(visible)]="displayJourneyDialog" [modal]="true" header="Journey" [dismissableMask]="true" (onHide)="onDialogClose()">>
+  <p-dialog [(visible)]="displayJourneyDialog" [modal]="true" header="Journey" [dismissableMask]="true" (onHide)="onDialogClose()">
     <app-journey [journey]="selectedJourney" [action]="journeyAction" (closeDialog)="displayJourneyDialog = false"></app-journey>
   </p-dialog>
 </div>
