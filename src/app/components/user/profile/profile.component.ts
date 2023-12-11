@@ -1,8 +1,9 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {DiJourneys, DiUser} from "../../../data";
 import {ActivatedRoute, Router} from "@angular/router";
 import {map} from "rxjs/operators";
 import {Observable} from "rxjs";
+import {JourneyComponent} from "../journey/journey.component";
 
 @Component({
   selector: 'app-profile',
@@ -23,6 +24,7 @@ export class ProfileComponent implements OnInit {
   currentJourneyHeader: string = "Current journey";
   showAddJourneyButton: boolean = false;
   journeyAction!: string;
+  @ViewChild(JourneyComponent) journeyComponent!: JourneyComponent;
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -72,7 +74,7 @@ export class ProfileComponent implements OnInit {
         const timeDiff = startDate.getTime() - today.getTime();
         const daysRemaining = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
         const hoursRemaining = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        if(daysRemaining === 0) {
+        if (daysRemaining === 0) {
           this.upcomingJourneyCountdown = `${hoursRemaining}h left!`
         } else {
           this.upcomingJourneyCountdown = `${daysRemaining}d ${hoursRemaining}h left!`
@@ -97,6 +99,7 @@ export class ProfileComponent implements OnInit {
         queryParams: {}
       }
     ).then();
+    this.journeyComponent.clearMarkersFromMap();
   }
 
 }

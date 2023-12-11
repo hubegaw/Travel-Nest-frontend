@@ -1,61 +1,72 @@
-<div class="flights-wrapper">
+<div class="hotels-wrapper">
   <div id="search-wrapper">
-    <app-search></app-search>
+    <app-search [currentForm]="currentForm"></app-search>
   </div>
-  <div id="table-wrapper">
-    <p-card *ngIf="result.length != 0">
-      <p-table [value]="result" dataKey="id" [tableStyle]="{ 'min-width': '60rem' }" [rows]="10"
+  <div id="hotels-container">
+    <p-panel class="hotel-tiles panel table" *ngIf="result.length != 0">
+      <p-table [value]="result" dataKey="name" [rows]="5"
                [showCurrentPageReport]="true"
                [rowsPerPageOptions]="[10, 25, 50]"
-               [paginator]="true"
-               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+               [paginator]="true" [scrollable]="true" scrollHeight="510px">
         <ng-template pTemplate="body" let-hotel>
-          <div class="grid">
-            <div class="col-1 text-center">
-              <span>{{hotel.name}}</span>
-            </div>
-            <div class="col-1">
-              <button type="button" pButton pRipple label="select" icon="pi pi-plus"
-                      (click)="showJourneys($event, hotel, op)">
-              </button>
-            </div>
-            <p-overlayPanel #op>
-              <p-table [value]="journeys$ | async">
-                <ng-template pTemplate="header">
-                  <tr>
-                    <th>Select journey to add flight</th>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-journey>
-                  <div class="flex flex-row flex-wrap journey-row" (click)="addHotelToJourney(journey)">
-                    <div class="flex flex-column align-items-center justify-content-center">
-                      <div class="upper">
-                        <span><b>{{journey.startPlace.country}}</b></span>
-                      </div>
-                      <div class="lower">
-                        <span>{{journey.startDate.substr(0, 10)}}</span>
-                      </div>
-                    </div>
-                    <div class="flex align-items-center justify-content-center middle">
-                      <span><i class="pi pi-arrow-right"></i></span>
-                    </div>
-                    <div class="flex flex-column align-items-center justify-content-center">
-                      <div class="upper">
-                        <span><b>{{journey.destination.country}}</b></span>
-                      </div>
-                      <div class="lower">
-                        <span>{{journey.endDate.substr(0, 10)}}</span>
-                      </div>
-                    </div>
+          <p-panel (click)="findHotelOffers(hotel.hotelId)" class="hotel-offer">
+            <p-header>
+              <h3>{{ hotel.name }}</h3>
+            </p-header>
+            <p-table [value]="hotelOffers[hotel.hotelId]" dataKey="type">
+              <ng-template pTemplate="body" let-offers>
+                <tr *ngFor="let offer of offers.offers" class="flex justify-content-between align-items-center">
+                  <div>
+                    <div>Date: {{offer.checkInDate}} - {{offer.checkOutDate}}</div>
+                    <div>Price: {{offer.price.total}} {{offer.price.currency}}</div>
+                    <div>No. of beds: {{offer.room.typeEstimated.beds}}</div>
                   </div>
-                </ng-template>
-              </p-table>
-            </p-overlayPanel>
-          </div>
+                  <div>
+                    <button type="button" pButton pRipple label="select" icon="pi pi-plus"
+                            (click)="showJourneys($event, hotel, offer, op)">
+                    </button>
+                  </div>
+                </tr>
+              </ng-template>
+            </p-table>
+          </p-panel>
         </ng-template>
       </p-table>
-    </p-card>
-    <p-card *ngIf="result.length == 0" class="flex justify-content-center align-items-center no-flights"><span
-      style="font-size: 1.3rem;">No hotels found!</span></p-card>
+      <p-overlayPanel #op>
+        <p-table [value]="journeys$ | async" [scrollable]="true" scrollHeight="510px">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Select journey to add flight</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-journey>
+            <div class="flex flex-row flex-wrap journey-row" (click)="addHotelToJourney(journey)">
+              <div class="flex flex-column align-items-center justify-content-center">
+                <div class="upper">
+                  <span><b>{{journey.startPlace.country}}</b></span>
+                </div>
+                <div class="lower">
+                  <span>{{journey.startDate.substr(0, 10)}}</span>
+                </div>
+              </div>
+              <div class="flex align-items-center justify-content-center middle">
+                <span><i class="pi pi-arrow-right"></i></span>
+              </div>
+              <div class="flex flex-column align-items-center justify-content-center">
+                <div class="upper">
+                  <span><b>{{journey.destination.country}}</b></span>
+                </div>
+                <div class="lower">
+                  <span>{{journey.endDate.substr(0, 10)}}</span>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </p-table>
+      </p-overlayPanel>
+    </p-panel>
+    <p-panel class="hotel-map panel">
+      <div class="map" #map></div>
+    </p-panel>
   </div>
 </div>

@@ -6,15 +6,15 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { HotelRequest } from '../../models/hotel-request';
-import { HotelResponse } from '../../models/hotel-response';
+import { ActivitiesResponse } from '../../models/activities-response';
+import { AmadeusGeoCode } from '../../models/amadeus-geo-code';
 
-export interface GetHotels$Params {
-      body: HotelRequest
+export interface GetActivities$Params {
+      body: AmadeusGeoCode
 }
 
-export function getHotels(http: HttpClient, rootUrl: string, params: GetHotels$Params, context?: HttpContext): Observable<StrictHttpResponse<HotelResponse>> {
-  const rb = new RequestBuilder(rootUrl, getHotels.PATH, 'post');
+export function getActivities(http: HttpClient, rootUrl: string, params: GetActivities$Params, context?: HttpContext): Observable<StrictHttpResponse<ActivitiesResponse>> {
+  const rb = new RequestBuilder(rootUrl, getActivities.PATH, 'post');
   if (params) {
     rb.body(params.body, 'application/json');
   }
@@ -24,9 +24,9 @@ export function getHotels(http: HttpClient, rootUrl: string, params: GetHotels$P
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<HotelResponse>;
+      return r as StrictHttpResponse<ActivitiesResponse>;
     })
   );
 }
 
-getHotels.PATH = '/v1/amadeus/hotels';
+getActivities.PATH = '/v1/amadeus/recommendations/activities';

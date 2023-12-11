@@ -1,0 +1,27 @@
+<div class="recommendations-wrapper">
+  <div *ngFor="let recommendation of recommendations">
+    <p-card>
+      <p-header>
+        {{ recommendation.cityName }}
+      </p-header>
+      <p-footer>
+        <p-button [outlined]="true" (click)="showDetails(recommendation)">Show Details</p-button>
+      </p-footer>
+    </p-card>
+  </div>
+  <p-dialog [(visible)]="displayDetailsDialog" [modal]="true" [dismissableMask]="true">
+    <p-carousel *ngIf="currentRecommendation" [value]="currentRecommendation.activities" [numVisible]="1" [numScroll]="1" [circular]="true" [responsiveOptions]="responsiveOptions">
+      <p-header>{{currentRecommendation.cityName}}</p-header>
+      <ng-template let-activity pTemplate="item">
+        <p-header>{{activity.name}}</p-header>
+        <div [innerHTML]="'Test\nNew Line' | newlineToBr"></div>
+<!--        {{activity.description}}-->
+        <p-galleria [value]="activity.pictures" [containerStyle]="{ 'max-width': '640px' }" [numVisible]="5" [circular]="true" [showItemNavigators]="true" [showThumbnails]="false">
+          <ng-template pTemplate="item" let-picture>
+            <img [src]="picture" style="width: 100%; display: block;" />
+          </ng-template>
+        </p-galleria>
+      </ng-template>
+    </p-carousel>
+  </p-dialog>
+</div>

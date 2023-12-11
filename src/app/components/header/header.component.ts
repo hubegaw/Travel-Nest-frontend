@@ -11,6 +11,7 @@ import {MenubarModule} from "primeng/menubar";
 import {LoginModule} from "../login/login.module";
 import {DialogModule} from "primeng/dialog";
 import {Router} from "@angular/router";
+import {RegisterModule} from "../register/register.module";
 
 @Component({
   selector: 'app-header',
@@ -18,7 +19,7 @@ import {Router} from "@angular/router";
   styleUrls: ['./header.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, BrowserAnimationsModule, SpeedDialModule, InputTextModule, ReactiveFormsModule, PasswordModule, MenubarModule, LoginModule, DialogModule]
+  imports: [CommonModule, BrowserAnimationsModule, SpeedDialModule, InputTextModule, ReactiveFormsModule, PasswordModule, MenubarModule, LoginModule, DialogModule, RegisterModule]
 })
 export class HeaderComponent implements OnInit {
   protected readonly authService = inject(AuthenticationService);
@@ -26,6 +27,7 @@ export class HeaderComponent implements OnInit {
   itemsUser: MenuItem[] = [];
   itemsGuest: MenuItem[] = [];
   displayLoginDialog: boolean = false;
+  displayRegisterDialog: boolean = false;
 
   ngOnInit() {
     this.itemsUser = [
@@ -38,11 +40,6 @@ export class HeaderComponent implements OnInit {
         label: 'Hotels',
         icon: 'pi pi-home',
         routerLink: '/hotels'
-      },
-      {
-        label: 'Explore',
-        icon: 'pi pi-compass',
-        routerLink: '/explore'
       },
       {
         label: 'Profile',
@@ -77,11 +74,6 @@ export class HeaderComponent implements OnInit {
         routerLink: '/hotels'
       },
       {
-        label: 'Explore',
-        icon: 'pi pi-compass',
-        routerLink: '/explore'
-      },
-      {
         label: 'Log in',
         icon: 'pi pi-sign-in',
         command: () => {
@@ -91,7 +83,22 @@ export class HeaderComponent implements OnInit {
     ]
   }
 
+  showLoginDialog() {
+    this.displayLoginDialog = true;
+    this.displayRegisterDialog = false;
+  }
+
+  showRegisterDialog() {
+    this.displayRegisterDialog = true;
+    this.displayLoginDialog = false;
+  }
+
   closeLoginDialog() {
     this.displayLoginDialog = false;
   }
+
+  closeRegisterDialog() {
+    this.displayRegisterDialog = false;
+  }
+
 }

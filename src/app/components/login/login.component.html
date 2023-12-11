@@ -11,10 +11,10 @@
     </div>
     <div class="flex flex-column gap-2">
       <small>Not yet signed up? Register
-        <p-button label="here" buttonClassName="p-button-outlined"></p-button>
+        <p-button label="here" buttonClassName="p-button-outlined" (click)="closeDialog.emit(); showRegister.emit()"></p-button>
       </small>
     </div>
     <p-button type="submit" label="Submit"
-              id="submit-button"></p-button>
+              id="submit-button" ></p-button>
   </form>
 </div>

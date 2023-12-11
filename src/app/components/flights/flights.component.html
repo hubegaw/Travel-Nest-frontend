@@ -3,8 +3,11 @@
     <app-search></app-search>
   </div>
   <div id="table-wrapper">
-    <p-card *ngIf="result.length != 0">
-      <p-table [value]="result" dataKey="id" [tableStyle]="{ 'min-width': '60rem' }" [rows]="10"
+    <p-panel class="right-side">
+      <p-header style="font-size: 1.3rem;" *ngIf="result.length == 0">No flights available!</p-header>
+      <p-header style="font-size: 1.3rem;" *ngIf="result.length != 0">Flights</p-header>
+      <p-table *ngIf="result.length != 0" [value]="result" dataKey="id" [tableStyle]="{ 'width': '100%' }"
+               [rows]="5"
                [showCurrentPageReport]="true"
                [rowsPerPageOptions]="[10, 25, 50]"
                [paginator]="true"
@@ -150,8 +153,10 @@
           </div>
         </ng-template>
       </p-table>
-    </p-card>
-    <p-card *ngIf="result.length == 0" class="flex justify-content-center align-items-center no-flights"><span
-      style="font-size: 1.3rem;">No flights available!</span></p-card>
+    </p-panel>
+    <p-panel class="left-side">
+      <p-header style="font-size: 1.3rem">Recommended Locations</p-header>
+      <app-recommendations></app-recommendations>
+    </p-panel>
   </div>
 </div>

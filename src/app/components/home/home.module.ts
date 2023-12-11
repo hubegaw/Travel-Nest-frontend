@@ -10,22 +10,24 @@ import {FlightsModule} from "../flights/flights.module";
 import {NgIf} from "@angular/common";
 import {SearchModule} from "../search/search.module";
 import {ToastModule} from "primeng/toast";
+import {GalleriaModule} from "primeng/galleria";
 
 @NgModule({
   declarations: [HomeComponent],
-  imports: [
-    InputTextModule,
-    FormsModule,
-    ButtonModule,
-    CalendarModule,
-    ReactiveFormsModule,
-    DropdownModule,
-    CheckboxModule,
-    FlightsModule,
-    NgIf,
-    SearchModule,
-    ToastModule
-  ],
+    imports: [
+        InputTextModule,
+        FormsModule,
+        ButtonModule,
+        CalendarModule,
+        ReactiveFormsModule,
+        DropdownModule,
+        CheckboxModule,
+        FlightsModule,
+        NgIf,
+        SearchModule,
+        ToastModule,
+        GalleriaModule
+    ],
   providers: []
 })
 export class HomeModule {}

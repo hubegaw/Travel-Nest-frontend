@@ -9,7 +9,6 @@ import {NotFoundComponent} from './components/errors/not-found/not-found.compone
 import {UnauthorizedComponent} from './components/errors/unauthorized/unauthorized.component';
 import {HeaderComponent} from "./components/header";
 import {FooterComponent} from "./components/footer";
-import {RegisterComponent} from './components/register/register.component';
 import {InputTextModule} from "primeng/inputtext";
 import {ReactiveFormsModule} from "@angular/forms";
 import {LoginModule} from "./components/login/login.module";
@@ -21,14 +20,16 @@ import {SearchModule} from "./components/search/search.module";
 import {ProfileModule} from "./components/user/profile/user.module";
 import {JourneyModule} from "./components/user/journey/journey.module";
 import {HotelsModule} from "./components/hotels/hotels.module";
+import {PasswordModule} from "primeng/password";
+import {RegisterModule} from "./components/register/register.module";
+import {RecommendationsModule} from "./components/recommendations/recommendations.module";
 
 @NgModule({
   declarations: [
     AppComponent,
     ForbiddenComponent,
     NotFoundComponent,
-    UnauthorizedComponent,
-    RegisterComponent
+    UnauthorizedComponent
   ],
   imports: [
     BrowserModule,
@@ -39,14 +40,17 @@ import {HotelsModule} from "./components/hotels/hotels.module";
     ProfileModule,
     JourneyModule,
     LoginModule,
+    RegisterModule,
     HotelsModule,
     HeaderComponent,
     FooterComponent,
+    RecommendationsModule,
     InputTextModule,
     ReactiveFormsModule,
     HttpClientModule,
     MatIconModule,
-    ButtonModule
+    ButtonModule,
+    PasswordModule
   ],
   providers: [],
   bootstrap: [AppComponent]

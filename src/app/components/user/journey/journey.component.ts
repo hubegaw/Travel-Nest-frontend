@@ -4,18 +4,21 @@ import {
   ElementRef,
   EventEmitter,
   inject,
-  Input, OnChanges,
+  Input,
+  OnChanges,
   OnDestroy,
   OnInit,
-  Output, SimpleChanges,
+  Output,
+  SimpleChanges,
   ViewChild
 } from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
-import {config, Map, MapStyle, Marker} from '@maptiler/sdk';
+import {config, GeoJSONSourceSpecification, Map, MapStyle, Marker} from '@maptiler/sdk';
 import {MessageService} from "primeng/api";
 import {JourneyApiService} from "../../../services/journey-api.service";
-import {Observable} from "rxjs";
-import {HttpClient} from "@angular/common/http";
+import {forkJoin, Observable} from "rxjs";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {AuthenticationService} from "../../../services/auth.service";
 
 @Component({
   selector: 'app-journey',
@@ -26,6 +29,7 @@ export class JourneyComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   private readonly messageService = inject(MessageService);
   private readonly journeyService = inject(JourneyApiService);
   private readonly httpClient = inject(HttpClient);
+  private readonly authService = inject(AuthenticationService);
   @Input() journey!: any;
   @Input() action!: string;
   @Output() closeDialog = new EventEmitter<void>();
@@ -52,7 +56,7 @@ export class JourneyComponent implements OnInit, AfterViewInit, OnChanges, OnDes
       startDate: new FormControl<Date | null>(null, Validators.required),
       endDate: new FormControl<Date | null>(null, Validators.required),
       pois: new FormArray([]),
-      user: new FormControl('1')
+      user: new FormControl('')
     });
 
     config.apiKey = this.apiKey
@@ -151,8 +155,7 @@ export class JourneyComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   }
 
   centerMapOnPoi(poi) {
-    console.log(poi)
-    if(poi.location) {
+    if (poi.location) {
       this.map.flyTo({center: poi.location, essential: true, zoom: 16});
     } else {
       this.map.flyTo({center: poi.coordinates, essential: true, zoom: 16});
@@ -177,7 +180,7 @@ export class JourneyComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     pois.forEach(poi => {
       const location = poi.coordinates;
 
-      new Marker({ color: 'blue' })
+      new Marker({color: 'blue'})
         .setLngLat([location[0], location[1]])
         .addTo(this.map);
     });
@@ -199,9 +202,10 @@ export class JourneyComponent implements OnInit, AfterViewInit, OnChanges, OnDes
 
   mapFormToDTO(): any {
     const formValue = this.journeyForm.value;
+    const userId = this.authService.decodeToken().userId;
 
     const journeyDTO = {
-      user: formValue.user,
+      user: userId,
       startPlace: {
         country: formValue.originCountry,
         city: formValue.originCity,
@@ -222,8 +226,103 @@ export class JourneyComponent implements OnInit, AfterViewInit, OnChanges, OnDes
         coordinates: poi.location,
       }))
     };
-
     return journeyDTO;
+  }
+
+  clearMarkersFromMap() {
+    Object.values(this.markers).forEach(marker => {
+      marker.remove();
+    });
+    this.markers = {};
+    this.pois = [];
+  }
+
+  onCarButtonClick() {
+    const origin = this.journeyForm.value.originCity;
+    const destination = this.journeyForm.value.destinationCity;
+
+    forkJoin({
+      origin: this.getCoordinates(origin),
+      destination: this.getCoordinates(destination)
+    }).subscribe(({origin, destination}) => {
+
+      const originCoordsLat = origin.features[0].geometry.coordinates[1];
+      const originCoordsLon = origin.features[0].geometry.coordinates[0];
+      const destinationCoordsLat = destination.features[0].geometry.coordinates[1];
+      const destinationCoordsLon = destination.features[0].geometry.coordinates[0];
+
+      this.getRoute([originCoordsLon, originCoordsLat], [destinationCoordsLon, destinationCoordsLat])
+        .subscribe(route => {
+          this.drawRouteOnMap(route);
+        });
+    });
+  }
+
+  getRoute(origin: any, destination: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8',
+      'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
+      'Authorization': '5b3ce3597851110001cf6248445981b90d3540ec988c988d21ade9dd'
+    });
+
+    const body = {
+      coordinates: [origin, destination]
+    };
+
+    const routeServiceUrl = 'https://api.openrouteservice.org/v2/directions/driving-car';
+
+    return this.httpClient.post(routeServiceUrl, body, {headers: headers});
+  }
+
+  parseRouteData(routeData) {
+    const coordinates = routeData.routes[0].geometry;
+
+    let geoJson = {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "properties": {
+            "name": "Route"
+          },
+          "geometry": {
+            "type": "LineString",
+            "coordinates": coordinates
+          }
+        }
+      ]
+    };
+
+    return geoJson;
+  }
+
+  drawRouteOnMap(routeData) {
+    this.map.on('load', async () => {
+      const routeGeoJSON = this.parseRouteData(routeData);
+
+      if (this.map.getLayer('route')) {
+        this.map.removeLayer('route');
+      }
+      if (this.map.getSource('route')) {
+        this.map.removeSource('route');
+      }
+
+      this.map.addSource('route', {
+        type: 'geojson',
+        data: routeGeoJSON
+      });
+
+      this.map.addLayer({
+        id: 'route',
+        type: 'line',
+        source: 'route',
+        layout: {},
+        paint: {
+          'line-color': '#ff7f00',
+          'line-width': 5
+        }
+      });
+    });
   }
 
   ngOnDestroy() {

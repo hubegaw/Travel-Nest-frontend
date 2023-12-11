@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
+:host {
+  background-color: #2e3f75;
+}
+
 .header-container {
   min-height: 100px;
   min-width: 376px;
@@ -7,6 +11,7 @@
   margin: 0 10px;
   display: flex;
   flex-direction: column;
+
 }
 
 #top-header {
@@ -17,9 +22,19 @@
   color: #444346;
 }
 
+::ng-deep .p-menubar {
+  background-color: transparent;
+  border: none;
+  color: white;
+}
+
 ::ng-deep a {
   text-decoration: none;
-  color: inherit;
+  color: white;
+}
+
+::ng-deep .p-menubar .p-menuitem > .p-menuitem-content .p-menuitem-link .p-menuitem-text {
+  color: white;
 }
 
 ::ng-deep h2 {

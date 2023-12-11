@@ -24,7 +24,7 @@ export class AuthenticationService {
       next: (response) => {
         localStorage.setItem(this.access_token, <string>response.accessToken);
         localStorage.setItem(this.refresh_token, <string>response.refreshToken);
-        this.scheduleTokenRefresh(<string>response.accessToken);
+        this.scheduleTokenRefresh();
         this.messageService.add({
           severity: 'success',
           summary: 'Logged in',
@@ -74,11 +74,35 @@ export class AuthenticationService {
     this.router.navigate(['/home']).then();
   }
 
+  public checkTokenValidity() {
+
+    let decodedToken = this.decodeToken()
+    if(decodedToken != null) {
+      const expiration = decodedToken.exp;
+      const now = Date.now() / 1000;
+
+      if(expiration < now) {
+        localStorage.removeItem(this.access_token);
+        localStorage.removeItem(this.refresh_token);
+      }
+    }
+  }
+
+  public decodeToken(): any | null {
+    let token = this.getToken()
+    if(token != null && token != '' && token != undefined) {
+      const helper = new JwtHelperService();
+      return helper.decodeToken(token);
+    }
+    return null;
+  }
+
   private refreshToken(): void {
     this.authenticationClient.refreshAccessToken().subscribe({
       next: (response) => {
         localStorage.setItem(this.access_token, <string>response.accessToken);
         localStorage.setItem(this.refresh_token, <string>response.refreshToken);
+        console.log('refreshed')
       }
     });
   }
@@ -89,20 +113,21 @@ export class AuthenticationService {
     return token != null && token.length > 0;
   }
 
-  public getToken(): string | null {
+  private getToken(): string | null {
     return this.isLoggedIn() ? localStorage.getItem(this.access_token) : null;
   }
 
-  private scheduleTokenRefresh(token: string): void {
-    const helper = new JwtHelperService();
+  private scheduleTokenRefresh(): void {
+    const decodedToken = this.decodeToken();
+    if(decodedToken != null) {
+      const expiration = decodedToken.exp;
+      const now = Date.now() / 1000;
 
-    const decodedToken = helper.decodeToken(token);
-    const expiration = decodedToken.exp;
-    const now = Date.now() / 1000;
+      const delay = (expiration - now) * 1000 - (60 * 1000);
 
-    const delay = (expiration - now) * 1000 - (60 * 1000); // Refresh 5 minutes before expiration
-
-    setTimeout(() => this.refreshToken(), delay > 0 ? delay : 0);
+      setTimeout(() => this.refreshToken(), delay > 0 ? delay : 0);
+    }
   }
+
 
 }

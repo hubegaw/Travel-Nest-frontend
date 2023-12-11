@@ -6,9 +6,8 @@ import {CheckboxModule} from "primeng/checkbox";
 import {DropdownModule} from "primeng/dropdown";
 import {InputTextModule} from "primeng/inputtext";
 import {ReactiveFormsModule} from "@angular/forms";
-import {NgIf} from "@angular/common";
+import {NgIf, NgOptimizedImage} from "@angular/common";
 import {PanelModule} from "primeng/panel";
-import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {BrowserModule} from "@angular/platform-browser";
 import {AutoCompleteModule} from "primeng/autocomplete";
 import {MultiSelectModule} from "primeng/multiselect";
@@ -26,7 +25,8 @@ import {MultiSelectModule} from "primeng/multiselect";
         PanelModule,
         BrowserModule,
         AutoCompleteModule,
-        MultiSelectModule
+        MultiSelectModule,
+        NgOptimizedImage
     ],
   exports: [
     SearchComponent

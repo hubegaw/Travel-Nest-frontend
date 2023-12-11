@@ -11,6 +11,7 @@ export class LoginComponent implements OnInit {
   private readonly authService = inject(AuthenticationService);
   loginForm!: FormGroup;
   @Output() closeDialog = new EventEmitter<void>();
+  @Output() showRegister = new EventEmitter<void>();
 
   ngOnInit() {
     this.loginForm =new FormGroup({

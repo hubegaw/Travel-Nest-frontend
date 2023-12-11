@@ -9,6 +9,7 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
+import { ActivitiesResponse } from '../models/activities-response';
 import { AirportAndCityResponse } from '../models/airport-and-city-response';
 import { authenticate } from '../fn/operations/authenticate';
 import { Authenticate$Params } from '../fn/operations/authenticate';
@@ -16,24 +17,32 @@ import { AuthResponse } from '../models/auth-response';
 import { deleteJourney } from '../fn/operations/delete-journey';
 import { DeleteJourney$Params } from '../fn/operations/delete-journey';
 import { FlightOfferResponse } from '../models/flight-offer-response';
+import { getActivities } from '../fn/operations/get-activities';
+import { GetActivities$Params } from '../fn/operations/get-activities';
 import { getAirports } from '../fn/operations/get-airports';
 import { GetAirports$Params } from '../fn/operations/get-airports';
 import { getAllUserJourneys } from '../fn/operations/get-all-user-journeys';
 import { GetAllUserJourneys$Params } from '../fn/operations/get-all-user-journeys';
 import { getAllUsers } from '../fn/operations/get-all-users';
 import { GetAllUsers$Params } from '../fn/operations/get-all-users';
-import { getHotels } from '../fn/operations/get-hotels';
-import { GetHotels$Params } from '../fn/operations/get-hotels';
+import { getHotelsByCity } from '../fn/operations/get-hotels-by-city';
+import { GetHotelsByCity$Params } from '../fn/operations/get-hotels-by-city';
+import { getHotelsOffers } from '../fn/operations/get-hotels-offers';
+import { GetHotelsOffers$Params } from '../fn/operations/get-hotels-offers';
 import { getJourney } from '../fn/operations/get-journey';
 import { GetJourney$Params } from '../fn/operations/get-journey';
+import { getRecommendations } from '../fn/operations/get-recommendations';
+import { GetRecommendations$Params } from '../fn/operations/get-recommendations';
 import { getUserByEmail } from '../fn/operations/get-user-by-email';
 import { GetUserByEmail$Params } from '../fn/operations/get-user-by-email';
 import { getUserById } from '../fn/operations/get-user-by-id';
 import { GetUserById$Params } from '../fn/operations/get-user-by-id';
+import { HotelOffer } from '../models/hotel-offer';
 import { HotelResponse } from '../models/hotel-response';
 import { JourneyDto } from '../models/journey-dto';
 import { postFlightOffers } from '../fn/operations/post-flight-offers';
 import { PostFlightOffers$Params } from '../fn/operations/post-flight-offers';
+import { RecommendationResponse } from '../models/recommendation-response';
 import { refreshAccessToken } from '../fn/operations/refresh-access-token';
 import { RefreshAccessToken$Params } from '../fn/operations/refresh-access-token';
 import { register } from '../fn/operations/register';
@@ -514,36 +523,135 @@ export class ApiService extends BaseService {
     );
   }
 
-  /** Path part for operation `getHotels()` */
-  static readonly GetHotelsPath = '/v1/amadeus/hotels';
+  /** Path part for operation `getHotelsByCity()` */
+  static readonly GetHotelsByCityPath = '/v1/amadeus/hotels';
 
   /**
-   * get hotels.
+   * get hotels by city.
    *
    *
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `getHotels()` instead.
+   * To access only the response body, use `getHotelsByCity()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  getHotels$Response(params: GetHotels$Params, context?: HttpContext): Observable<StrictHttpResponse<HotelResponse>> {
-    return getHotels(this.http, this.rootUrl, params, context);
+  getHotelsByCity$Response(params: GetHotelsByCity$Params, context?: HttpContext): Observable<StrictHttpResponse<HotelResponse>> {
+    return getHotelsByCity(this.http, this.rootUrl, params, context);
   }
 
   /**
-   * get hotels.
+   * get hotels by city.
    *
    *
    *
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `getHotels$Response()` instead.
+   * To access the full response (for headers, for example), `getHotelsByCity$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  getHotels(params: GetHotels$Params, context?: HttpContext): Observable<HotelResponse> {
-    return this.getHotels$Response(params, context).pipe(
+  getHotelsByCity(params: GetHotelsByCity$Params, context?: HttpContext): Observable<HotelResponse> {
+    return this.getHotelsByCity$Response(params, context).pipe(
       map((r: StrictHttpResponse<HotelResponse>): HotelResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `getHotelsOffers()` */
+  static readonly GetHotelsOffersPath = '/v1/amadeus/hotels/offers';
+
+  /**
+   * get hotels offers.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getHotelsOffers()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  getHotelsOffers$Response(params: GetHotelsOffers$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<HotelOffer>>> {
+    return getHotelsOffers(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * get hotels offers.
+   *
+   *
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getHotelsOffers$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  getHotelsOffers(params: GetHotelsOffers$Params, context?: HttpContext): Observable<Array<HotelOffer>> {
+    return this.getHotelsOffers$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<HotelOffer>>): Array<HotelOffer> => r.body)
+    );
+  }
+
+  /** Path part for operation `getRecommendations()` */
+  static readonly GetRecommendationsPath = '/v1/amadeus/recommendations/{city}';
+
+  /**
+   * Get recommended locations.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getRecommendations()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getRecommendations$Response(params: GetRecommendations$Params, context?: HttpContext): Observable<StrictHttpResponse<RecommendationResponse>> {
+    return getRecommendations(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Get recommended locations.
+   *
+   *
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getRecommendations$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getRecommendations(params: GetRecommendations$Params, context?: HttpContext): Observable<RecommendationResponse> {
+    return this.getRecommendations$Response(params, context).pipe(
+      map((r: StrictHttpResponse<RecommendationResponse>): RecommendationResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `getActivities()` */
+  static readonly GetActivitiesPath = '/v1/amadeus/recommendations/activities';
+
+  /**
+   * Get activities for location.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getActivities()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  getActivities$Response(params: GetActivities$Params, context?: HttpContext): Observable<StrictHttpResponse<ActivitiesResponse>> {
+    return getActivities(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Get activities for location.
+   *
+   *
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getActivities$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  getActivities(params: GetActivities$Params, context?: HttpContext): Observable<ActivitiesResponse> {
+    return this.getActivities$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ActivitiesResponse>): ActivitiesResponse => r.body)
     );
   }
 

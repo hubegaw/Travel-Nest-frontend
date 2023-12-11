@@ -2,7 +2,6 @@ import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {FlightOfferDto} from "../../api/models/flight-offer-dto";
 import {JourneyApiService} from "../../services/journey-api.service";
 import {SharedService} from "../../services/shared.service";
-import {SelectItem} from "primeng/api";
 import {Observable} from "rxjs";
 import {JourneyDto} from "../../api/models/journey-dto";
 import {DiJourneys} from "../../data";
@@ -15,13 +14,10 @@ import {OverlayPanel} from "primeng/overlaypanel";
 })
 export class FlightsComponent implements OnInit {
   private readonly journeyService = inject(JourneyApiService);
-  private readonly sharedService = inject(SharedService)
+  private readonly sharedService = inject(SharedService);
   protected journeys$: Observable<Array<JourneyDto>> = inject(DiJourneys);
   protected result: any = {};
   protected loading: boolean = true;
-  protected sortOptions!: SelectItem[];
-  protected sortOrder!: number;
-  protected sortField!: string;
   protected journeys!: JourneyDto[];
   protected selectedFlight: any;
   @ViewChild(OverlayPanel) overlayPanel!: OverlayPanel;
@@ -32,21 +28,16 @@ export class FlightsComponent implements OnInit {
         this.loading = false;
       }
       this.result = result;
-      console.log(result)
     });
 
     this.journeys$.subscribe((result) => {
       this.journeys = result;
     })
 
-    this.sortOptions = [
-      {label: 'Price High to Low', value: '!price'},
-      {label: 'Price Low to High', value: 'price'}
-    ];
   }
 
   showJourneys(event: any, flight: FlightOfferDto, overlayPanel: OverlayPanel) {
-    this.selectedFlight = flight; // Set the selected flight
+    this.selectedFlight = flight;
     overlayPanel.toggle(event);
   }
 
@@ -57,8 +48,8 @@ export class FlightsComponent implements OnInit {
     journey.flights.push(this.selectedFlight);
 
     this.journeyService.updateJourney$Response({
-      id: <string> journey.id,
-      body: this.selectedFlight
+      id: <string>journey.id,
+      body: journey
     }).subscribe({
       next: () => {
         console.log('Journey updated with new flight');
@@ -69,18 +60,6 @@ export class FlightsComponent implements OnInit {
     });
 
     this.overlayPanel.hide();
-  }
-
-  onSortChange(event: any) {
-    let value = event.value;
-
-    if (value.indexOf('!') === 0) {
-      this.sortOrder = -1;
-      this.sortField = value.substring(1, value.length);
-    } else {
-      this.sortOrder = 1;
-      this.sortField = value;
-    }
   }
 
 }

@@ -1,33 +1,34 @@
 <div id="profile-container">
   <div id="info">
     <div id="user-details" class="card flex justify-content-center">
-      <p-card header="User Details" *ngIf="userDetails">
+      <p-card header="User Details" >
         <div class="detail flex">
           <div class="value">First Name: </div>
-          <div class="key">{{userDetails.firstName}}</div>
+          <div class="key" *ngIf="userDetails">{{userDetails.firstName}}</div>
         </div>
         <div class="detail flex">
           <div class="value">Last Name: </div>
-          <div class="key">{{userDetails.lastName}}</div>
+          <div class="key" *ngIf="userDetails">{{userDetails.lastName}}</div>
         </div>
         <div class="detail flex">
           <div class="value">Email Address: </div>
-          <div class="key">{{userDetails.email}}</div>
+          <div class="key" *ngIf="userDetails">{{userDetails.email}}</div>
         </div>
         <div class="detail flex">
           <div class="value">Phone Number: </div>
-          <div class="key">{{userDetails.phoneNumber}}</div>
+          <div class="key" *ngIf="userDetails">{{userDetails.phoneNumber}}</div>
         </div>
         <div class="detail flex">
           <div class="value">Since: </div>
-          <div class="key">{{userDetails.createdAt.substr(0,10)}}</div>
+          <div class="key" *ngIf="userDetails">{{userDetails.createdAt.substr(0,10)}}</div>
         </div>
       </p-card>
     </div>
     <div id="journeys" class="card flex justify-content-center">
-      <p-card header="Your Journeys" *ngIf="journeys">
+      <p-card header="Your Journeys">
+
         <p-button type="button" label="Add New Journey" (click)="onJourneyAction('add')" [text]="true"></p-button>
-        <p-table [value]="journeys" selectionMode="single" [scrollable]="true" scrollHeight="250px" [virtualScroll]="true" [(selection)]="selectedJourney" dataKey="id"
+        <p-table *ngIf="journeys" [value]="journeys" selectionMode="single" [scrollable]="true" scrollHeight="250px" [virtualScroll]="true" [(selection)]="selectedJourney" dataKey="id"
                  (onRowSelect)="onJourneyAction('show')">
           <ng-template pTemplate="header">
             <tr>

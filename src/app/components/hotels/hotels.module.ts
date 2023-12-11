@@ -15,26 +15,30 @@ import {DataViewModule} from "primeng/dataview";
 import {OverlayPanelModule} from "primeng/overlaypanel";
 import {BrowserModule} from "@angular/platform-browser";
 import {HotelsComponent} from "./hotels.component";
+import {AccordionModule} from "primeng/accordion";
+import {PanelModule} from "primeng/panel";
 
 @NgModule({
   declarations: [HotelsComponent],
-  imports: [
-    ButtonModule,
-    CalendarModule,
-    CheckboxModule,
-    DropdownModule,
-    InputTextModule,
-    PaginatorModule,
-    ReactiveFormsModule,
-    RippleModule,
-    TableModule,
-    SearchModule,
-    NgIf,
-    CardModule,
-    DataViewModule,
-    OverlayPanelModule,
-    BrowserModule
-  ],
+    imports: [
+        ButtonModule,
+        CalendarModule,
+        CheckboxModule,
+        DropdownModule,
+        InputTextModule,
+        PaginatorModule,
+        ReactiveFormsModule,
+        RippleModule,
+        TableModule,
+        SearchModule,
+        NgIf,
+        CardModule,
+        DataViewModule,
+        OverlayPanelModule,
+        BrowserModule,
+        AccordionModule,
+        PanelModule
+    ],
   exports: [
     HotelsComponent
   ],

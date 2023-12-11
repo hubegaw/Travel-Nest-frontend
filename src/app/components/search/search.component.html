@@ -3,128 +3,120 @@
     <ng-template pTemplate="header" id="search-options" *ngIf="currentComponent === 'home'">
       <p-button label="Flights" class="search-button" (click)="currentForm = 'flights'"></p-button>
       <p-button label="Hotels" class="search-button" (click)="currentForm = 'hotels'"></p-button>
-      <p-button label="Car Rental" class="search-button" (click)="currentForm = 'carRental'"></p-button>
     </ng-template>
     <form [formGroup]="flightForm" (ngSubmit)="searchFlights(flightForm)" *ngIf="currentForm === 'flights'">
-      <div class="grid">
-        <div class="col">
-          <div>
-            <span class="p-float-label">
-              <p-autoComplete [suggestions]="suggestions"
-                              field="label"
-                              id="departure"
-                              formControlName="departure"
-                              (completeMethod)="searchAirports($event)">
-              </p-autoComplete>
-              <label htmlFor="departure">From</label>
-            </span>
-            <p-checkbox formControlName="nonStop" [binary]="true" id="nonStop"></p-checkbox>
-            <label for="nonStop">direct flight</label>
-          </div>
+      <div class="formgrid grid">
+        <div class="field col-12 md:col-2">
+          <span class="p-float-label">
+            <p-autoComplete [suggestions]="suggestions"
+                            field="label"
+                            id="departure"
+                            formControlName="departure"
+                            (completeMethod)="searchAirports($event)">
+            </p-autoComplete>
+            <label htmlFor="departure">From</label>
+          </span>
+          <p-checkbox formControlName="nonStop" [binary]="true" id="nonStop"></p-checkbox>
+          <label for="nonStop">direct flight</label>
         </div>
-        <div class="col">
-          <div>
-            <span class="p-float-label">
-              <p-autoComplete [suggestions]="suggestions"
-                              field="label"
-                              id="arrival"
-                              formControlName="arrival"
-                              (completeMethod)="searchAirports($event)">
-              </p-autoComplete>
-              <label htmlFor="arrival">To</label>
-            </span>
-          </div>
-        </div>
-        <div class="col">
-          <div>
-            <span class="p-float-label">
-              <p-calendar id="startDate" formControlName="startDate" [showButtonBar]="true"/>
-              <label htmlFor="startDate">Depart</label>
-            </span>
-          </div>
-        </div>
-        <div class="col">
-          <div>
-            <span class="p-float-label">
-              <p-calendar id="endDate" formControlName="endDate" [showButtonBar]="true"/>
-              <label htmlFor="endDate">Return</label>
-            </span>
-          </div>
-        </div>
-        <div class="col">
-          <div>
-            <span class="p-float-label space">
-              <input pInputText id="adults" formControlName="adults"/>
-              <label htmlFor="adults">Adults</label>
-            </span>
-            <span class="p-float-label space">
-              <input pInputText id="children" formControlName="children"/>
-              <label htmlFor="children">Children</label>
-            </span>
-            <span class="p-float-label">
+        <div class="field col-12 md:col-2">
+          <span class="p-float-label">
+            <p-autoComplete [suggestions]="suggestions"
+                            field="label"
+                            id="arrival"
+                            formControlName="arrival"
+                            (completeMethod)="searchAirports($event)">
+            </p-autoComplete>
+            <label htmlFor="arrival">To</label>
+          </span>
+          <div class="p-float-label " style="margin-top: 25px; width: calc(100% - 8px)">
               <p-dropdown [options]="travelClasses" formControlName="travelClass" id="travelClass"
                           placeholder="Select a travel class"></p-dropdown>
               <label htmlFor="travelClass">Travel Class</label>
-            </span>
           </div>
         </div>
-        <div class="col">
-          <div>
-            <p-button type="submit" label="Search"></p-button>
-          </div>
+        <div class="field col-12 md:col-2">
+          <span class="p-float-label" style="min-width: 90px">
+            <p-calendar id="startDate" formControlName="startDate" [showButtonBar]="true"/>
+            <label htmlFor="startDate">Depart</label>
+          </span>
+        </div>
+        <div class="field col-12 md:col-2">
+          <span class="p-float-label" style="min-width: 90px">
+            <p-calendar id="endDate" formControlName="endDate" [showButtonBar]="true"/>
+            <label htmlFor="endDate">Return</label>
+          </span>
+        </div>
+        <div class="field col-12 md:col-1">
+          <span class="p-float-label space">
+            <input pInputText id="adults" formControlName="adults" style="width: 90px"/>
+            <label htmlFor="adults">Adults</label>
+          </span>
+        </div>
+        <div class="field col-12 md:col-1">
+          <span class="p-float-label space">
+            <input pInputText id="children" formControlName="children" style="width: 90px"/>
+            <label htmlFor="children">Children</label>
+          </span>
+        </div>
+        <div class="field col-12 md:col-1">
+          <p-button type="submit" label="Search"></p-button>
         </div>
       </div>
     </form>
     <form [formGroup]="hotelForm" (ngSubmit)="searchHotels(hotelForm)" *ngIf="currentForm === 'hotels'">
-      <div class="grid">
-        <div class="col">
+      <div class="formgrid grid">
+        <div class="field col-12 md:col-2">
           <span class="p-float-label">
             <p-autoComplete [suggestions]="suggestions"
                             field="label"
                             id="city"
                             formControlName="cityCode"
+                            (onSelect)="onCitySelected($event)"
                             (completeMethod)="searchCity($event)">
             </p-autoComplete>
-            <label htmlFor="city">From</label>
+            <label htmlFor="city">Where</label>
           </span>
         </div>
-        <div class="col">
+        <div class="field col-12 md:col-2">
           <div>
-            <span class="p-float-label">
+            <span class="p-float-label" style="min-width: 90px">
               <p-calendar id="checkInDate" formControlName="checkInDate" [showButtonBar]="true"></p-calendar>
               <label htmlFor="checkInDate">Check in</label>
             </span>
           </div>
         </div>
-        <div class="col">
+        <div class="field col-12 md:col-2">
           <div>
-            <span class="p-float-label">
+            <span class="p-float-label" style="min-width: 90px">
               <p-calendar id="checkOutDate" formControlName="checkOutDate" [showButtonBar]="true"></p-calendar>
               <label htmlFor="checkOutDate">Check out</label>
             </span>
           </div>
         </div>
-        <div class="col">
-          <div>
+        <div class="field col-12 md:col-1" style="margin-right: 10px">
             <span class="p-float-label space">
               <input pInputText id="adultsHotel" formControlName="adults"/>
               <label htmlFor="adultsHotel">Adults</label>
             </span>
+        </div>
+        <div class="field col-12 md:col-1" style="margin-right: 20px">
             <span class="p-float-label">
               <p-multiSelect [options]="ratings" formControlName="ratings"
                              optionLabel="label">
               </p-multiSelect>
               <label htmlFor="travelClass">rating</label>
             </span>
+        </div>
+        <div class="field col-12 md:col-1" style="margin-right: 20px">
             <span class="p-float-label">
               <p-multiSelect [options]="amenities" formControlName="amenities"
                              optionLabel="label">
               </p-multiSelect>
               <label htmlFor="travelClass">amenities</label>
             </span>
-          </div>
         </div>
-        <div class="col">
+        <div class="field col-12 md:col-1">
           <div>
             <p-button type="submit" label="Search"></p-button>
           </div>

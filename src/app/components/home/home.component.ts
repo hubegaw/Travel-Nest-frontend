@@ -1,12 +1,4 @@
-import {booleanAttribute, Component, inject, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {JourneyApiService} from "../../services/journey-api.service";
-import {FlightService} from "../../services/flight.service";
-import {FlightOfferDto} from "../../api/models/flight-offer-dto";
-import {FlightOfferResponse} from "../../api/models/flight-offer-response";
-import {catchError, map} from "rxjs/operators";
-import {of} from "rxjs";
-import {SharedService} from "../../services/shared.service";
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-home',
@@ -14,11 +6,25 @@ import {SharedService} from "../../services/shared.service";
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  componentName: string = "home"
-  constructor() {
-  }
+  componentName: string = "home";
+  imageQuotes: { image: string, quote: string }[] = [];
 
   ngOnInit() {
+    const images = [
+      'assets/images/image1.jpg',
+      'assets/images/image2.jpg',
+      'assets/images/image3.jpg',
+      'assets/images/image4.jpg',
+    ];
 
+    const quotes = [
+      "Explore the world, one journey at a time.",
+      "Embrace the beauty of every destination.",
+      "Adventure awaits at every corner of the globe.",
+      "Find joy in the journey, not just the destination.",
+      "Discover new horizons and create unforgettable memories."
+    ];
+
+    this.imageQuotes = images.map((image, index) => ({ image, quote: quotes[index] }));
   }
 }

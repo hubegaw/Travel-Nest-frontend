@@ -15,6 +15,8 @@ import {CardModule} from "primeng/card";
 import {DataViewModule} from "primeng/dataview";
 import {OverlayPanelModule} from "primeng/overlaypanel";
 import {BrowserModule} from "@angular/platform-browser";
+import {PanelModule} from "primeng/panel";
+import {RecommendationsModule} from "../recommendations/recommendations.module";
 
 @NgModule({
     declarations: [FlightsComponent],
@@ -33,7 +35,9 @@ import {BrowserModule} from "@angular/platform-browser";
         CardModule,
         DataViewModule,
         OverlayPanelModule,
-        BrowserModule
+        BrowserModule,
+        PanelModule,
+        RecommendationsModule
     ],
     exports: [
         FlightsComponent

@@ -13,7 +13,11 @@
     </p-menubar>
   </div>
   <p-dialog [(visible)]="displayLoginDialog" [modal]="true" header="Login" [dismissableMask]="true">
-    <app-login (closeDialog)="closeLoginDialog()"></app-login>
+    <app-login *ngIf="displayLoginDialog" (closeDialog)="closeLoginDialog()" (showRegister)="showRegisterDialog()"></app-login>
+  </p-dialog>
+
+  <p-dialog [(visible)]="displayRegisterDialog" [modal]="true" header="Register" [dismissableMask]="true">
+    <app-register *ngIf="displayRegisterDialog" (closeDialog)="closeRegisterDialog()" (showLogin)="showLoginDialog()"></app-register>
   </p-dialog>
 </div>
 
