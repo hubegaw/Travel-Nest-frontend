@@ -11,6 +11,7 @@ import {PanelModule} from "primeng/panel";
 import {BrowserModule} from "@angular/platform-browser";
 import {AutoCompleteModule} from "primeng/autocomplete";
 import {MultiSelectModule} from "primeng/multiselect";
+import {PasswordModule} from "primeng/password";
 
 @NgModule({
   declarations: [SearchComponent],
@@ -26,7 +27,8 @@ import {MultiSelectModule} from "primeng/multiselect";
         BrowserModule,
         AutoCompleteModule,
         MultiSelectModule,
-        NgOptimizedImage
+        NgOptimizedImage,
+        PasswordModule
     ],
   exports: [
     SearchComponent

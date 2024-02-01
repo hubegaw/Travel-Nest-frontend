@@ -1,8 +1,7 @@
-import {Component, inject, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {FlightOfferDto} from "../../api/models/flight-offer-dto";
 import {SharedService} from "../../services/shared.service";
-import {Router} from "@angular/router";
 import {AmadeusDataService} from "../../services/amadeus-data.service";
 import {HotelRequest} from "../../api/models/hotel-request";
 import {HotelOfferRequest} from "../../api/models/hotel-offer-request";
@@ -19,9 +18,9 @@ export class SearchComponent implements OnInit {
   private readonly amadeusData = inject(AmadeusDataService);
   private readonly sharedService = inject(SharedService);
   private readonly hotelDataService = inject(HotelDataService);
-  private readonly router = inject(Router);
   @Input() currentComponent!: string;
   @Output() cityName!: string;
+  @Output() searchedSection: EventEmitter<string> = new EventEmitter<string>();
   suggestions: any[] = [];
 
   @Input() currentForm: string = 'flights';
@@ -93,54 +92,56 @@ export class SearchComponent implements OnInit {
   }
 
   searchFlights(flightForm: FormGroup) {
-    const flightDto: FlightOfferDto = {
-      originLocationCode: flightForm.get('departure')?.value['value'] || '',
-      destinationLocationCode: flightForm.get('arrival')?.value['value'] || '',
-      departureDate: this.changeDateFormat(flightForm.get('startDate')?.value) || '',
-      returnDate: this.changeDateFormat(flightForm.get('endDate')?.value) || '',
-      adults: parseInt(flightForm.get('adults')?.value) || 0,
-      children: parseInt(flightForm.get('children')?.value) || 0,
-      travelClass: flightForm.get('travelClass')?.value || null,
-      nonStop: flightForm.get('nonStop')?.value || false,
-      currencyCode: 'PLN',
-      max: 250
-    };
+    if(flightForm.valid) {
+      const flightDto: FlightOfferDto = {
+        originLocationCode: flightForm.get('departure')?.value['value'] || '',
+        destinationLocationCode: flightForm.get('arrival')?.value['value'] || '',
+        departureDate: this.changeDateFormat(flightForm.get('startDate')?.value) || '',
+        returnDate: this.changeDateFormat(flightForm.get('endDate')?.value) || '',
+        adults: parseInt(flightForm.get('adults')?.value) || 0,
+        children: parseInt(flightForm.get('children')?.value) || 0,
+        travelClass: flightForm.get('travelClass')?.value || null,
+        nonStop: flightForm.get('nonStop')?.value || false,
+        currencyCode: 'PLN',
+        max: 250
+      };
 
-    this.apiService.postFlightOffers({body: flightDto}).subscribe(result => {
-      this.sharedService.updateResults(result.data);
-    });
+      this.apiService.postFlightOffers({body: flightDto}).subscribe(result => {
+        this.sharedService.updateResults(result.data);
+      });
 
-    this.router.navigate(['/flights']).then();
+      this.searchedSection.emit('flights');
+    }
   }
 
   searchHotels(hotelsForm: FormGroup) {
-    const hotelRequest: HotelRequest = {
-      cityCode: hotelsForm.get('cityCode')?.value['value'] || '',
-      amenities: hotelsForm.get('amenities')?.value?.map(amenity => amenity.value) || [],
-      ratings: hotelsForm.get('ratings')?.value?.map(rating => rating.value) || []
+    if(hotelsForm.valid) {
+      const hotelRequest: HotelRequest = {
+        cityCode: hotelsForm.get('cityCode')?.value['value'] || '',
+        amenities: hotelsForm.get('amenities')?.value?.map(amenity => amenity.value) || [],
+        ratings: hotelsForm.get('ratings')?.value?.map(rating => rating.value) || []
+      }
+
+
+      const hotelOfferRequest: HotelOfferRequest = {
+        checkInDate: this.changeDateFormat(hotelsForm.get('checkInDate')?.value) || '',
+        checkOutDate: this.changeDateFormat(hotelsForm.get('checkOutDate')?.value) || '',
+        adults: hotelsForm.get('adults')?.value || 1,
+        priceRange: hotelsForm.get('priceRange')?.value || null,
+        roomQuantity: hotelsForm.get('roomQuantity')?.value || null
+      }
+
+      this.apiService.getHotelsByCity({body: hotelRequest}).subscribe(result => {
+        this.sharedService.updateResults(result);
+      })
+
+      this.hotelDataService.passHotelOfferRequest(hotelOfferRequest);
+      this.searchedSection.emit('hotels');
     }
-
-    const hotelOfferRequest: HotelOfferRequest = {
-      checkInDate: this.changeDateFormat(hotelsForm.get('checkInDate')?.value) || '',
-      checkOutDate: this.changeDateFormat(hotelsForm.get('checkOutDate')?.value) || '',
-      adults: hotelsForm.get('adults')?.value || 1,
-      priceRange: hotelsForm.get('priceRange')?.value || null,
-      roomQuantity: hotelsForm.get('roomQuantity')?.value || null
-    }
-
-    this.apiService.getHotelsByCity({body: hotelRequest}).subscribe(result => {
-      this.sharedService.updateResults(result);
-    })
-
-    this.hotelDataService.passHotelOfferRequest(hotelOfferRequest);
-
-    this.router.navigate(['/hotels']).then();
   }
 
   onCitySelected(event: any) {
     const cityCode = event.value;
-    console.log(cityCode)
-
   }
 
   protected searchCity(event) {
@@ -198,7 +199,10 @@ export class SearchComponent implements OnInit {
     if (day < 10) {
       day = '0' + day;
     }
-    let month = date.getMonth() + 1; // add 1 because months are indexed from 0
+    let month = date.getMonth() + 1;
+    if (month < 10) {
+      month = '0' + month;
+    }
     let year = date.getFullYear();
 
     return `${year}-${month}-${day}`;

@@ -83,9 +83,9 @@ export class ProfileComponent implements OnInit {
     }
 
     if (hasUpcomingJourney) {
-      this.currentJourneyHeader = "Upcoming Journey";
+      this.currentJourneyHeader = "Upcoming journey";
     } else {
-      this.currentJourneyHeader = "No Current or Upcoming Journeys";
+      this.currentJourneyHeader = "No current or upcoming journeys";
       this.showAddJourneyButton = true;
     }
     return journeyToReturn;

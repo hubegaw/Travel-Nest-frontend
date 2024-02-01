@@ -32,16 +32,6 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.itemsUser = [
       {
-        label: 'Flights',
-        icon: '',
-        routerLink: '/flights'
-      },
-      {
-        label: 'Hotels',
-        icon: 'pi pi-home',
-        routerLink: '/hotels'
-      },
-      {
         label: 'Profile',
         icon: 'pi pi-user',
         routerLink: '/user/profile'
@@ -63,16 +53,6 @@ export class HeaderComponent implements OnInit {
     ];
 
     this.itemsGuest = [
-      {
-        label: 'Flights',
-        icon: '',
-        routerLink: '/flights'
-      },
-      {
-        label: 'Hotels',
-        icon: 'pi pi-home',
-        routerLink: '/hotels'
-      },
       {
         label: 'Log in',
         icon: 'pi pi-sign-in',

@@ -1,18 +1,33 @@
 <div id="home-container">
   <div id="search-wrapper">
-    <app-search [currentComponent]="componentName"></app-search>
+    <app-search [currentComponent]="componentName" (searchedSection)="handleChildOutput($event)"></app-search>
   </div>
-  <div class="card gallery">
-    <p-galleria [value]="imageQuotes" [autoPlay]="true" [circular]="true" [numVisible]="5" [containerStyle]="{ 'max-width': '720px'}" [showThumbnails]="false" [transitionInterval]="10000">
-      <ng-template pTemplate="item" let-item let-i="index">
-        <div class="image-container">
-          <img [src]="item.image" style="width: 100%;" />
-          <div class="quote-overlay">{{ item.quote }}</div>
-        </div>
-      </ng-template>
-    </p-galleria>
+  <div id="results">
+    <app-hotels *ngIf="componentToShow == 'hotels'"></app-hotels>
+    <app-flights *ngIf="componentToShow == 'flights'"></app-flights>
   </div>
-</div>
-<div class="alert">
-  <p-toast [showTransitionOptions]="'500ms'" [hideTransitionOptions]="'4000ms'"></p-toast>
+  <div id="features-wrapper">
+    <div class="panel">
+      <p-panel id="gallery-wrapper">
+        <p-galleria [value]="imageQuotes" [autoPlay]="true" [circular]="true" [numVisible]="5"
+                    [containerStyle]="{ 'max-width': '100%', 'min-width': '338px' }" [showThumbnails]="false"
+                    [transitionInterval]="10000" class="gallery">
+          <ng-template pTemplate="item" let-item let-i="index">
+            <div class="image-container">
+              <img [src]="item.image" style="width: 100%;"/>
+              <div class="quote-overlay">{{ item.quote }}</div>
+            </div>
+          </ng-template>
+        </p-galleria>
+      </p-panel>
+    </div>
+    <div class="panel">
+      <p-panel id="map-wrapper">
+        <div class="map" #map></div>
+      </p-panel>
+    </div>
+  </div>
+  <div class="alert">
+    <p-toast [showTransitionOptions]="'500ms'" [hideTransitionOptions]="'4000ms'"></p-toast>
+  </div>
 </div>

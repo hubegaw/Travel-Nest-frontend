@@ -14,8 +14,7 @@
       <p-header>{{currentRecommendation.cityName}}</p-header>
       <ng-template let-activity pTemplate="item">
         <p-header>{{activity.name}}</p-header>
-        <div [innerHTML]="'Test\nNew Line' | newlineToBr"></div>
-<!--        {{activity.description}}-->
+        <div [innerHTML]="activity.description | newlineToBr"></div>
         <p-galleria [value]="activity.pictures" [containerStyle]="{ 'max-width': '640px' }" [numVisible]="5" [circular]="true" [showItemNavigators]="true" [showThumbnails]="false">
           <ng-template pTemplate="item" let-picture>
             <img [src]="picture" style="width: 100%; display: block;" />

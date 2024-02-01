@@ -368,10 +368,10 @@ components:
                 type: string
               name:
                 type: string
-              checkIn:
+              checkInDate:
                 type: string
                 format: date
-              checkOut:
+              checkOutDate:
                 type: string
                 format: date
               price:

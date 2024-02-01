@@ -89,6 +89,7 @@ export class JourneyComponent implements OnInit, AfterViewInit, OnChanges, OnDes
       this.loadPoisToMap(this.journey.placesToVisit);
       this.centerMapOnCity(this.journey.destination.city);
       this.pois = this.journey.placesToVisit;
+      console.log(this.journey)
     }
   }
 

@@ -11,6 +11,8 @@ import {NgIf} from "@angular/common";
 import {SearchModule} from "../search/search.module";
 import {ToastModule} from "primeng/toast";
 import {GalleriaModule} from "primeng/galleria";
+import {PanelModule} from "primeng/panel";
+import {HotelsModule} from "../hotels/hotels.module";
 
 @NgModule({
   declarations: [HomeComponent],
@@ -26,7 +28,9 @@ import {GalleriaModule} from "primeng/galleria";
         NgIf,
         SearchModule,
         ToastModule,
-        GalleriaModule
+        GalleriaModule,
+        PanelModule,
+        HotelsModule
     ],
   providers: []
 })

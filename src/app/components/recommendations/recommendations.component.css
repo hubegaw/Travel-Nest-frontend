@@ -1,6 +1,26 @@
+::ng-deep .p-card {
+  margin-bottom: 5px;
+}
+
+::ng-deep .p-card .p-card-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  padding: 10px;
+}
+
+::ng-deep .p-card p-footer, ::ng-deep .p-card p-button, ::ng-deep .p-card button {
+  display: inline-block;
+  width: 100%;
+}
+
+::ng-deep .p-card .p-card-content {
+  padding: 0;
+}
+
 ::ng-deep p-dialog>div>div {
   width: 1200px;
-
 }
 
 ::ng-deep p-carousel {

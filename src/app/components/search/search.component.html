@@ -16,8 +16,11 @@
             </p-autoComplete>
             <label htmlFor="departure">From</label>
           </span>
-          <p-checkbox formControlName="nonStop" [binary]="true" id="nonStop"></p-checkbox>
-          <label for="nonStop">direct flight</label>
+          <div class="field col-12 md:col-2 checkbox"
+               style="width: 100%; display: flex; justify-content: start; align-items: center; margin-top: 10px;">
+            <p-checkbox formControlName="nonStop" [binary]="true" id="nonStop"></p-checkbox>
+            <label for="nonStop">direct flight</label>
+          </div>
         </div>
         <div class="field col-12 md:col-2">
           <span class="p-float-label">
@@ -30,9 +33,9 @@
             <label htmlFor="arrival">To</label>
           </span>
           <div class="p-float-label " style="margin-top: 25px; width: calc(100% - 8px)">
-              <p-dropdown [options]="travelClasses" formControlName="travelClass" id="travelClass"
-                          placeholder="Select a travel class"></p-dropdown>
-              <label htmlFor="travelClass">Travel Class</label>
+            <p-dropdown [options]="travelClasses" formControlName="travelClass" id="travelClass"
+                        placeholder="Select a travel class"></p-dropdown>
+            <label htmlFor="travelClass">Travel Class</label>
           </div>
         </div>
         <div class="field col-12 md:col-2">
@@ -94,27 +97,45 @@
             </span>
           </div>
         </div>
-        <div class="field col-12 md:col-1" style="margin-right: 10px">
+        <div class="field col-12 md:col-2" style="margin-right: 10px; margin-bottom: 0;">
             <span class="p-float-label space">
               <input pInputText id="adultsHotel" formControlName="adults"/>
               <label htmlFor="adultsHotel">Adults</label>
             </span>
+            <div class="field col-12 md:col-2" style="padding: 0; width: 100%;">
+              <span class="p-float-label space">
+                <input pInputText id="roomQuantity" formControlName="roomQuantity"/>
+                <label htmlFor="roomQuantity">Room quantity</label>
+             </span>
+            </div>
         </div>
-        <div class="field col-12 md:col-1" style="margin-right: 20px">
-            <span class="p-float-label">
+        <div class="field col-12 md:col-1" style="margin-right: 20px; margin-bottom: 0;">
+            <span class="p-float-label space">
               <p-multiSelect [options]="ratings" formControlName="ratings"
                              optionLabel="label">
               </p-multiSelect>
               <label htmlFor="travelClass">rating</label>
             </span>
+            <div class="field col-12 md:col-1" style="padding: 0; width: 100%;">
+              <span class="p-float-label space">
+                <input pInputText id="minPrice" formControlName="minPrice"/>
+                <label htmlFor="minPrice">Min Price</label>
+             </span>
+            </div>
         </div>
         <div class="field col-12 md:col-1" style="margin-right: 20px">
-            <span class="p-float-label">
+            <span class="p-float-label space">
               <p-multiSelect [options]="amenities" formControlName="amenities"
                              optionLabel="label">
               </p-multiSelect>
               <label htmlFor="travelClass">amenities</label>
             </span>
+            <div class="field col-12 md:col-1" style="padding: 0; width: 100%;">
+              <span class="p-float-label space">
+                <input pInputText id="maxPrice" formControlName="maxPrice"/>
+                <label htmlFor="maxPrice">Max Price</label>
+             </span>
+            </div>
         </div>
         <div class="field col-12 md:col-1">
           <div>

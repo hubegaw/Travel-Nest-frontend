@@ -12,8 +12,8 @@ export interface JourneyDto {
   hotels?: Array<{
 'hotelId'?: string;
 'name'?: string;
-'checkIn'?: string;
-'checkOut'?: string;
+'checkInDate'?: string;
+'checkOutDate'?: string;
 'price'?: Price;
 'room'?: Room;
 'geoCode'?: {

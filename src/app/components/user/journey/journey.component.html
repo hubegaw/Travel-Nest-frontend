@@ -25,11 +25,6 @@
               <input pInputText id="originHouseNumber" formControlName="originHouseNumber"/>
               <label htmlFor="originHouseNumber">House Number</label>
             </span>
-            <h3>Where do you stay?</h3>
-            <div class="btn-container">
-              <button pButton class="bg-primary-reverse">Hotel</button>
-              <button pButton class="bg-primary-reverse">Other</button>
-            </div>
           </div>
           <div class="card">
             <h3>Where are you going?</h3>
@@ -53,12 +48,6 @@
               <input pInputText id="destinationHouseNumber" formControlName="destinationHouseNumber"/>
               <label htmlFor="destinationHouseNumber">House Number</label>
             </span>
-            <h3>How do you get there?</h3>
-            <div class="btn-container">
-              <button pButton class="bg-primary-reverse">Plane</button>
-              <button pButton class="bg-primary-reverse" (click)="onCarButtonClick()">Car</button>
-              <button pButton class="bg-primary-reverse">Other</button>
-            </div>
           </div>
           <div class="card">
             <h3>Points Of Interest</h3>
@@ -76,83 +65,167 @@
           <p-button type="submit" label="Submit"></p-button>
         </div>
       </form>
-      <div *ngIf="action === 'show' && journey" class="flex flex-wrap align-content-start" style="width: 100%; padding: 10px;">
+      <div *ngIf="action === 'show' && journey" class="flex flex-wrap align-content-start"
+           style="width: 100%; padding: 10px;">
         <div class="flex align-items-center justify-content-start" style="width: 100%; height: 50px; font-size: 1.4rem">
           <div class="origin flex flex-column justify-content-center align-items-center">
             <div><b>{{journey.startPlace.country}}, {{journey.startPlace.city}}</b></div>
-            <div style="font-size: 1rem;">{{journey.startDate.substr(0,10)}}</div>
+            <div style="font-size: 1rem;">{{journey.startDate.substr(0, 10)}}</div>
           </div>
           <span style="margin: 0 40px"><i class="pi pi-arrow-right"></i></span>
           <div class="destination flex flex-column justify-content-center align-items-center">
             <div><b>{{journey.destination.country}}, {{journey.destination.city}}</b></div>
-            <div style="font-size: 1rem;">{{journey.endDate.substr(0,10)}}</div>
+            <div style="font-size: 1rem;">{{journey.endDate.substr(0, 10)}}</div>
           </div>
         </div>
-        <div class="flex-column">
-          <div class="card" *ngIf="journey.length != 0">
+        <div class="flex-row details" style="width: 100%;">
+          <div class="card" *ngIf="pois.length != 0">
             <h3>Points Of Interest</h3>
             <div class="btn-container">
-              <button pButton *ngFor="let poi of journey.pois" (click)="centerMapOnPoi(poi)"
+              <button pButton *ngFor="let poi of pois" (click)="centerMapOnPoi(poi)"
                       class="bg-primary-reverse">{{ poi.name }}
                 <p-button icon="pi pi-times" [rounded]="true" severity="danger" [text]="true" size="small"
                           (click)="onDeletePoi(poi.name)"></p-button>
               </button>
             </div>
           </div>
-          <div class="card" *ngIf="journey.flights != null">
-            <h3>Flights</h3>
-            <div class="btn-container">
-              <div *ngFor="let flight of journey.flights" class="flex-column">
-                <div class="grid">
-                  <div class="col-1 segment">
-                    <span>{{flight.itineraries[0].segments[0].carrierCode}}</span>
-                  </div>
-                  <div class="col-1 segment">
-                    <div class="upper">
-                      <span>{{ flight.itineraries[0].segments[0].departure.at.substr(11, 5) }}</span>
-                    </div>
-                    <div class="lower">
-                      <span>{{flight.itineraries[0].segments[0].departure.iataCode}}</span>
-                    </div>
-                  </div>
-                  <div class="col-1 segment">
-                    <span><i class="pi pi-arrow-right"></i></span>
-                  </div>
-                  <div class="col-1 segment">
-                    <div class="upper">
-                      <span>{{ flight.itineraries[0].segments[0].arrival.at.substr(11, 5) }}</span>
-                    </div>
-                    <div class="lower">
-                      <span>{{flight.itineraries[0].segments[0].arrival.iataCode}}</span>
-                    </div>
-                  </div>
-                  <div class="col-1 segment" *ngIf="flight.itineraries[0].segments[1]">
-                    <span><i class="pi pi-minus"></i></span>
-                  </div>
-                  <div class="col-1 segment" *ngIf="flight.itineraries[0].segments[1]">
-                    <span>{{flight.itineraries[0].segments[1].carrierCode}}</span>
-                  </div>
-                  <div class="col-1 segment" *ngIf="flight.itineraries[0].segments[1]">
-                    <div class="upper">
-                      <span>{{ flight.itineraries[0].segments[1].departure.at.substr(11, 5) }}</span>
-                    </div>
-                    <div class="lower">
-                      <span>{{flight.itineraries[0].segments[1].departure.iataCode}}</span>
-                    </div>
-                  </div>
-                  <div class="col-1 segment" *ngIf="flight.itineraries[0].segments[1]">
-                    <span><i class="pi pi-arrow-right"></i></span>
-                  </div>
-                  <div class="col-1 segment" *ngIf="flight.itineraries[0].segments[1]">
-                    <div class="upper">
-                      <span>{{ flight.itineraries[0].segments[1].arrival.at.substr(11, 5) }}</span>
-                    </div>
-                    <div class="lower">
-                      <span>{{flight.itineraries[0].segments[1].arrival.iataCode}}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <div class="details-col">
+            <div class="card" *ngIf="journey.flights != null">
+              <h3>Flights</h3>
+              <p-table [value]="journey.flights" dataKey="id" [tableStyle]="{ 'width': '100%' }"
+                       styleClass="p-datatable-striped">
+                <ng-template pTemplate="body" let-flight>
+                  <tr>
+                    <td>
+                      <span>{{flight.itineraries[0].segments[0].carrierCode}}</span>
+                    </td>
+                    <td>
+                      <div class="upper">
+                        <span>{{ flight.itineraries[0].segments[0].departure.at.substr(11, 5) }}</span>
+                      </div>
+                      <div class="lower">
+                        <span>{{flight.itineraries[0].segments[0].departure.iataCode}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <span><i class="pi pi-arrow-right"></i></span>
+                    </td>
+                    <td>
+                      <div class="upper">
+                        <span>{{ flight.itineraries[0].segments[0].arrival.at.substr(11, 5) }}</span>
+                      </div>
+                      <div class="lower">
+                        <span>{{flight.itineraries[0].segments[0].arrival.iataCode}}</span>
+                      </div>
+                    </td>
+                    <td *ngIf="flight.itineraries[0].segments[1]">
+                      <span><i class="pi pi-minus"></i></span>
+                    </td>
+                    <td *ngIf="flight.itineraries[0].segments[1]">
+                      <span>{{flight.itineraries[0].segments[1].carrierCode}}</span>
+                    </td>
+                    <td *ngIf="flight.itineraries[0].segments[1]">
+                      <div class="upper">
+                        <span>{{ flight.itineraries[0].segments[1].departure.at.substr(11, 5) }}</span>
+                      </div>
+                      <div class="lower">
+                        <span>{{flight.itineraries[0].segments[1].departure.iataCode}}</span>
+                      </div>
+                    </td>
+                    <td *ngIf="flight.itineraries[0].segments[1]">
+                      <span><i class="pi pi-arrow-right"></i></span>
+                    </td>
+                    <td *ngIf="flight.itineraries[0].segments[1]">
+                      <div class="upper">
+                        <span>{{ flight.itineraries[0].segments[1].arrival.at.substr(11, 5) }}</span>
+                      </div>
+                      <div class="lower">
+                        <span>{{flight.itineraries[0].segments[1].arrival.iataCode}}</span>
+                      </div>
+                    </td>
+                    <td class="text-center">
+                      <span>{{ flight.price.grandTotal + ' ' + flight.price.currency }}</span>
+                    </td>
+                  </tr>
+                  <tr *ngIf="flight.oneWay === false && flight.itineraries[1]">
+                    <td class="text-center">
+                      <span>{{flight.itineraries[1].segments[0].carrierCode}}</span>
+                    </td>
+                    <td>
+                      <div class="upper">
+                        <span>{{ flight.itineraries[1].segments[0].departure.at.substr(11, 5) }}</span>
+                      </div>
+                      <div class="lower">
+                        <span>{{flight.itineraries[1].segments[0].departure.iataCode}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <span><i class="pi pi-arrow-right"></i></span>
+                    </td>
+                    <td>
+                      <div class="upper">
+                        <span>{{ flight.itineraries[1].segments[0].arrival.at.substr(11, 5) }}</span>
+                      </div>
+                      <div class="lower">
+                        <span>{{flight.itineraries[1].segments[0].arrival.iataCode}}</span>
+                      </div>
+                    </td>
+                    <td *ngIf="flight.itineraries[1].segments[1]">
+                      <span><i class="pi pi-minus"></i></span>
+                    </td>
+                    <td class="text-center" *ngIf="flight.itineraries[1].segments[1]">
+                      <span>{{flight.itineraries[1].segments[1].carrierCode}}</span>
+                    </td>
+                    <td *ngIf="flight.itineraries[1].segments[1]">
+                      <div class="upper">
+                        <span>{{ flight.itineraries[1].segments[1].departure.at.substr(11, 5) }}</span>
+                      </div>
+                      <div class="lower">
+                        <span>{{flight.itineraries[1].segments[1].departure.iataCode}}</span>
+                      </div>
+                    </td>
+                    <td *ngIf="flight.itineraries[1].segments[1]">
+                      <span><i class="pi pi-arrow-right"></i></span>
+                    </td>
+                    <td *ngIf="flight.itineraries[1].segments[1]">
+                      <div class="upper">
+                        <span>{{ flight.itineraries[1].segments[1].arrival.at.substr(11, 5) }}</span>
+                      </div>
+                      <div class="lower">
+                        <span>{{flight.itineraries[1].segments[1].arrival.iataCode}}</span>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+            <div class="card" *ngIf="journey.hotels != null" style="width: 700px;">
+              <h3>Hotels</h3>
+              <p-table [value]="journey.hotels" dataKey="hotelId" [tableStyle]="{ 'width': '100%' }"
+                       styleClass="p-datatable-striped">
+                <ng-template pTemplate="body" let-hotel>
+                  <tr>
+                    <td>
+                      <span>{{hotel.name}}</span>
+                    </td>
+                    <td>
+                      <span>Check in: {{ hotel.checkInDate }}</span>
+                    </td>
+                    <td>
+                      <span>Check out: {{ hotel.checkOutDate }}</span>
+                    </td>
+                    <td *ngIf="hotel.room != null && hotel.room.typeEstimated.beds != null">
+                      <span>No. beds: {{hotel.room.typeEstimated.beds}}</span>
+                    </td>
+                    <td *ngIf="hotel.room != null && hotel.room.typeEstimated.bedType != null">
+                      <span>Bed type: {{hotel.room.typeEstimated.bedType}}</span>
+                    </td>
+                    <td *ngIf="hotel.price != null">
+                      <span>Final price: {{hotel.price.total}} {{hotel.price.currency}}</span>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
             </div>
           </div>
         </div>

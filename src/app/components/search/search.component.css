@@ -18,6 +18,11 @@ form {
   margin-bottom: 25px;
 }
 
-#nonStop {
-  margin-top: 10px;
+::ng-deep .checkbox {
+  padding: 0;
+}
+
+::ng-deep .checkbox>label {
+  margin-bottom: 0;
+  margin-left: 5px;
 }

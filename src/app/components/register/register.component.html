@@ -1,21 +1,21 @@
 <div id="register-wrapper">
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm)">
-    <h2>Welcome again!</h2>
+    <h2>Nice to meet You!</h2>
     <div class="flex flex-column gap-2">
       <label htmlFor="email">Email</label>
-      <input pInputText id="email" aria-describedby="email-help" formControlName="email"/>
+      <input pInputText id="email" aria-describedby="email-help" formControlName="email" required/>
     </div>
     <div class="flex flex-column gap-2">
       <label htmlFor="password">Password</label>
-      <p-password id="password" aria-describedby="password-help" formControlName="password" [feedback]="false"/>
+      <p-password id="password" aria-describedby="password-help" formControlName="password" [feedback]="false" required/>
     </div>
     <div class="flex flex-column gap-2">
       <label htmlFor="cpassword">Confirm Password</label>
-      <p-password id="cpassword" aria-describedby="password-help" formControlName="cpassword" [feedback]="false"/>
+      <p-password id="cpassword" aria-describedby="password-help" formControlName="cpassword" [feedback]="false" required/>
     </div>
     <div class="flex flex-column gap-2">
       <small>Already signed up? Log in
-        <p-button label="here" buttonClassName="p-button-outlined" (click)="closeDialog.emit(); showLogin.emit()"></p-button>
+        <p-button label="here" buttonClassName="p-button-outlined" (click)="closeDialog.emit(); showLogin.emit()" [link]="true" class="redirect-btn"></p-button>
       </small>
     </div>
     <p-button type="submit" label="Submit"

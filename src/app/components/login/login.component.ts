@@ -8,7 +8,7 @@ import {AuthenticationService} from "../../services/auth.service";
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  private readonly authService = inject(AuthenticationService);
+  protected readonly authService = inject(AuthenticationService);
   loginForm!: FormGroup;
   @Output() closeDialog = new EventEmitter<void>();
   @Output() showRegister = new EventEmitter<void>();

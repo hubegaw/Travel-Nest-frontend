@@ -1,7 +1,9 @@
 :host {
-  flex-grow: 2;
+  flex-grow: 9;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 #home-container {
@@ -9,29 +11,102 @@
   min-height: 70vh;
   display: flex;
   flex-direction: column;
-  /*justify-content: center;*/
+  justify-content: flex-start;
   align-items: center;
   margin: 10px 0;
-  flex-grow: 4;
+  flex-grow: 9;
 }
 
 #search-wrapper {
   padding: 0 10px;
   width: 100%;
-  margin-bottom: 25px;
-  height: 245px;
+  margin-bottom: 10px;
+  min-height: 180px;
 }
 
-.gallery {
+#results {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 10px;
 }
 
-::ng-deep .gallery img {
-  border-radius: 5px;
+#features-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 10px;
+}
 
+::ng-deep #gallery-wrapper, ::ng-deep #map-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 520px;
+  width: 100%;
+}
+
+@media screen and (min-width: 766px) {
+  ::ng-deep #gallery-wrapper {
+    margin-right: 10px;
+  }
+
+  ::ng-deep #gallery-wrapper, ::ng-deep #map-wrapper {
+    height: 520px;
+  }
+
+  .panel {
+    display: flex;
+    width: 50%;
+    height: 100%;
+  }
+
+  ::ng-deep .map {
+    position: absolute;
+    width: calc(50% - 35px);
+    height: calc(71% - 25px);
+  }
+}
+
+@media screen and (max-width: 765px) {
+  #features-wrapper {
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  ::ng-deep #gallery-wrapper  {
+    max-height: 460px;
+    margin-bottom: 10px;
+  }
+
+  ::ng-deep #map-wrapper {
+    height: 365px;
+  }
+
+  .panel {
+    width: 100%;
+  }
+
+  ::ng-deep .panel p-panel {
+    width: 100%;
+  }
+
+  ::ng-deep .map {
+    position: absolute;
+    width: calc(100% - 45px);
+    height: calc(50% - 25px);
+  }
+}
+
+::ng-deep #gallery-wrapper .p-panel-header, ::ng-deep #gallery-wrapper .p-panel-content {
+  padding: 0;
+}
+
+::ng-deep #gallery-wrapper img {
+  border-radius: 5px;
+  width: 100%;
 }
 
 .image-container {
@@ -55,4 +130,20 @@
 #results {
   width: 100%;
   margin-top: 10px;
+}
+
+.map>div {
+  height: 100%;
+  width: 100%;
+}
+
+::ng-deep .panel p-panel>div {
+  display: flex;
+  padding: 10px;
+  height: 100%;
+  width: 100%;
+}
+
+::ng-deep .panel .p-panel-header, ::ng-deep .panel .p-panel-content {
+  padding: 0;
 }

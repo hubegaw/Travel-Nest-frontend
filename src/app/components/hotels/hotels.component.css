@@ -1,18 +1,11 @@
 :host {
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 4;
-}
-
-#search-wrapper {
-  margin: 0 10px;
 }
 
 .hotels-wrapper {
   display: flex;
   flex-direction: column;
-  flex-grow: 3;
+  width: 100%;
 }
 
 #hotels-container {
@@ -20,29 +13,11 @@
   justify-content: space-between;
   align-items: start;
   width: 100%;
-  padding: 10px;
   height: 100%;
 }
 
 .hotel-tiles {
-  width: 50%;
-  height: 100%;
-}
-
-.hotel-map {
-  height: 100%;
-  position: relative;
-  width: 50%;
-  flex-grow: 3;
-}
-
-.map {
-  position: absolute;
-  width: calc(100% - 25px);
-  height: calc(100% - 25px);
-}
-
-.map>div {
+  width: 100%;
   height: 100%;
 }
 
@@ -53,7 +28,6 @@
   padding: 10px;
   height: 100%;
 }
-
 
 ::ng-deep .panel .p-panel-header, ::ng-deep .panel .p-panel-content {
   padding: 0;

@@ -22,6 +22,9 @@
           <div class="value">Since: </div>
           <div class="key" *ngIf="userDetails">{{userDetails.createdAt.substr(0,10)}}</div>
         </div>
+        <div class="detail flex" style="margin-top: auto;">
+          <p-button>Edit</p-button>
+        </div>
       </p-card>
     </div>
     <div id="journeys" class="card flex justify-content-center">

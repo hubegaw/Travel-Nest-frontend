@@ -42,6 +42,14 @@
   margin-right: 20px;
 }
 
+::ng-deep .header-container .pi {
+  color: white;
+}
+
+::ng-deep .p-menubar .p-menubar-root-list > .p-menuitem:not(.p-highlight):not(.p-disabled) > .p-menuitem-content:hover .p-menuitem-link .p-menuitem-text {
+  color: #2e3f75;
+}
+
 .popup {
   background-color: #ffffff;
   width: 500px;

@@ -1,16 +1,12 @@
 <div class="hotels-wrapper">
-  <div id="search-wrapper">
-    <app-search [currentForm]="currentForm"></app-search>
-  </div>
   <div id="hotels-container">
     <p-panel class="hotel-tiles panel table" *ngIf="result.length != 0">
-      <p-table [value]="result" dataKey="name" [rows]="5"
+      <p-table [value]="result" dataKey="name" [rows]="4" styleClass="p-datatable-striped"
                [showCurrentPageReport]="true"
                [rowsPerPageOptions]="[10, 25, 50]"
                [paginator]="true" [scrollable]="true" scrollHeight="510px">
         <ng-template pTemplate="body" let-hotel>
-          <p-panel (click)="findHotelOffers(hotel.hotelId)" class="hotel-offer">
-            <p-header>
+            <p-header (click)="findHotelOffers(hotel.hotelId)">
               <h3>{{ hotel.name }}</h3>
             </p-header>
             <p-table [value]="hotelOffers[hotel.hotelId]" dataKey="type">
@@ -29,7 +25,6 @@
                 </tr>
               </ng-template>
             </p-table>
-          </p-panel>
         </ng-template>
       </p-table>
       <p-overlayPanel #op>
@@ -64,9 +59,6 @@
           </ng-template>
         </p-table>
       </p-overlayPanel>
-    </p-panel>
-    <p-panel class="hotel-map panel">
-      <div class="map" #map></div>
     </p-panel>
   </div>
 </div>
